@@ -93,17 +93,20 @@
                             <td class="fw-semibold text-dark-blue">{{ g.nome }}</td>
                             <td>{{ g.vinculos_count }} pacientes</td>
                             <td class="text-center">
-                                <a href="{{ url_for('grupos.detalhes_grupo', grupo_id=g.id) }}" class="btn btn-sm btn-navy py-1 px-2.5" title="Mostrar Detalhes do Grupo">
+                                <a href="{{ url_for('grupos.detalhes_grupo', grupo_id=g.id) }}"
+                                    class="btn btn-sm btn-navy py-1 px-2.5" title="Mostrar Detalhes do Grupo">
                                     <i class="bi bi-eye-fill me-1"></i> Detalhes
                                 </a>
-                                <a href="{{ url_for('pacientes.pacientes') }}" class="btn btn-sm btn-outline-secondary py-1 px-2.5 ms-1" title="Vincular Paciente">
+                                <a href="{{ url_for('pacientes.pacientes') }}"
+                                    class="btn btn-sm btn-outline-secondary py-1 px-2.5 ms-1" title="Vincular Paciente">
                                     <i class="bi bi-link-45deg me-1"></i> Vincular Paciente
                                 </a>
                             </td>
                         </tr>
                         {% else %}
                         <tr>
-                            <td colspan="4" class="text-center py-4 text-muted">Nenhum grupo cadastrado recentemente.</td>
+                            <td colspan="4" class="text-center py-4 text-muted">Nenhum grupo cadastrado recentemente.
+                            </td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -122,11 +125,11 @@
 
                 <div class="d-grid gap-2 mb-4">
                     <a href="{{ url_for('pacientes.pacientes') }}" class="btn btn-navy text-start py-2.5 px-3">
-                        <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Paciente
+                        <i class="bi bi-person-plus-fill me-2"></i> Pacientes
                     </a>
                     <a href="{{ url_for('grupos.grupos') }}" class="btn btn-outline-dark text-start py-2.5 px-3"
                         style="border-color: var(--grey-border);">
-                        <i class="bi bi-grid-fill me-2"></i> Gerenciar Grupos
+                        <i class="bi bi-grid-fill me-2"></i> Grupos
                     </a>
                 </div>
             </div>
@@ -146,13 +149,17 @@
             <form action="{{ url_for('grupos.grupos') }}" method="POST">
                 <div class="modal-body py-4">
                     <div class="mb-3">
-                        <label for="nome" class="form-label fw-semibold text-dark-blue">Nome do Grupo de Atividade</label>
-                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Grupo D - Estimulação Cognitiva" required style="border-color: var(--grey-border);">
+                        <label for="nome" class="form-label fw-semibold text-dark-blue">Nome do Grupo de
+                            Atividade</label>
+                        <input type="text" class="form-control" id="nome" name="nome"
+                            placeholder="Ex: Grupo D - Estimulação Cognitiva" required
+                            style="border-color: var(--grey-border);">
                         <div class="form-text text-muted">Defina um nome único e descritivo para o grupo clínico.</div>
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                        data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-navy btn-sm px-3">Criar Grupo</button>
                 </div>
             </form>
