@@ -23,7 +23,7 @@
             
             {% if current_user.is_authenticated %}
             <nav class="sidebar-nav">
-                <a href="{{ url_for('index') }}" class="nav-link-custom {% if request.endpoint == 'index' %}active{% endif %}">
+                <a href="{{ url_for('dashboard.index') }}" class="nav-link-custom {% if request.endpoint == 'dashboard.index' %}active{% endif %}">
                     <i class="bi bi-speedometer2 me-2"></i> Dashboard
                 </a>
                 

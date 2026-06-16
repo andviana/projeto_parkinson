@@ -47,55 +47,81 @@
                     <td><code class="small text-muted" style="font-size: 0.75rem;">{{ p.id }}</code></td>
                     <td class="text-center">
                         <div class="d-inline-flex gap-1">
-                            <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=p.id) }}" class="btn btn-sm btn-navy py-1 px-2.5" title="Ver Detalhes">
+                            <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=p.id) }}"
+                                class="btn btn-sm btn-navy py-1 px-2.5" title="Ver Detalhes">
                                 <i class="bi bi-eye-fill"></i> Detalhes
                             </a>
-                            <button class="btn btn-sm btn-outline-secondary py-1 px-2.5" data-bs-toggle="modal" data-bs-target="#modalEditarPaciente-{{ p.id }}" title="Editar Dados">
+                            <button class="btn btn-sm btn-outline-secondary py-1 px-2.5" data-bs-toggle="modal"
+                                data-bs-target="#modalEditarPaciente-{{ p.id }}" title="Editar Dados">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
+                            <a href="{{ url_for('exames.cadastro_rapido_exames', paciente_id=p.id) }}"
+                                class="btn btn-sm btn-navy py-1 px-2.5" title="Lançar Exames">
+                                <i class="bi bi-file-earmark-plus-fill me-1"></i>
+                            </a>
                         </div>
                     </td>
                 </tr>
 
                 <!-- Modal de Edição de Paciente -->
-                <div class="modal fade" id="modalEditarPaciente-{{ p.id }}" tabindex="-1" aria-labelledby="modalEditarLabel-{{ p.id }}" aria-hidden="true">
+                <div class="modal fade" id="modalEditarPaciente-{{ p.id }}" tabindex="-1"
+                    aria-labelledby="modalEditarLabel-{{ p.id }}" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content border-0 shadow-lg">
                             <div class="modal-header bg-white border-bottom-0 pb-0">
-                                <h5 class="modal-title fw-bold text-dark-blue" id="modalEditarLabel-{{ p.id }}">Editar Cadastro de Paciente</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <h5 class="modal-title fw-bold text-dark-blue" id="modalEditarLabel-{{ p.id }}">Editar
+                                    Cadastro de Paciente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
                             </div>
                             <form action="{{ url_for('pacientes.editar_paciente', paciente_id=p.id) }}" method="POST">
                                 <div class="modal-body py-4">
                                     <div class="mb-3">
-                                        <label for="nome_completo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Nome Completo</label>
-                                        <input type="text" class="form-control" id="nome_completo-{{ p.id }}" name="nome_completo" value="{{ p.nome_completo }}" required style="border-color: var(--grey-border);">
+                                        <label for="nome_completo-{{ p.id }}"
+                                            class="form-label fw-semibold text-dark-blue">Nome Completo</label>
+                                        <input type="text" class="form-control" id="nome_completo-{{ p.id }}"
+                                            name="nome_completo" value="{{ p.nome_completo }}" required
+                                            style="border-color: var(--grey-border);">
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
-                                            <label for="data_nascimento-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
-                                            <input type="date" class="form-control" id="data_nascimento-{{ p.id }}" name="data_nascimento" value="{{ p.data_nascimento.strftime('%Y-%m-%d') }}" required style="border-color: var(--grey-border);">
+                                            <label for="data_nascimento-{{ p.id }}"
+                                                class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
+                                            <input type="date" class="form-control" id="data_nascimento-{{ p.id }}"
+                                                name="data_nascimento"
+                                                value="{{ p.data_nascimento.strftime('%Y-%m-%d') }}" required
+                                                style="border-color: var(--grey-border);">
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label for="sexo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Sexo</label>
-                                            <select class="form-select" id="sexo-{{ p.id }}" name="sexo" required style="border-color: var(--grey-border);">
-                                                <option value="M" {% if p.sexo == 'M' %}selected{% endif %}>Masculino</option>
-                                                <option value="F" {% if p.sexo == 'F' %}selected{% endif %}>Feminino</option>
-                                                <option value="O" {% if p.sexo == 'O' %}selected{% endif %}>Outro</option>
+                                            <label for="sexo-{{ p.id }}"
+                                                class="form-label fw-semibold text-dark-blue">Sexo</label>
+                                            <select class="form-select" id="sexo-{{ p.id }}" name="sexo" required
+                                                style="border-color: var(--grey-border);">
+                                                <option value="M" {% if p.sexo=='M' %}selected{% endif %}>Masculino
+                                                </option>
+                                                <option value="F" {% if p.sexo=='F' %}selected{% endif %}>Feminino
+                                                </option>
+                                                <option value="O" {% if p.sexo=='O' %}selected{% endif %}>Outro</option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="tipo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Tipo de Registro Clínico</label>
-                                        <select class="form-select" id="tipo-{{ p.id }}" name="tipo" required style="border-color: var(--grey-border);">
-                                            <option value="PD" {% if p.tipo == 'PD' %}selected{% endif %}>PD (Paciente com Parkinson)</option>
-                                            <option value="HC" {% if p.tipo == 'HC' %}selected{% endif %}>HC (Controle Saudável)</option>
-                                            <option value="PR" {% if p.tipo == 'PR' %}selected{% endif %}>PR (Familiar/Prodromal/Outro)</option>
+                                        <label for="tipo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Tipo
+                                            de Registro Clínico</label>
+                                        <select class="form-select" id="tipo-{{ p.id }}" name="tipo" required
+                                            style="border-color: var(--grey-border);">
+                                            <option value="PD" {% if p.tipo=='PD' %}selected{% endif %}>PD (Parkinson)
+                                            </option>
+                                            <option value="HC" {% if p.tipo=='HC' %}selected{% endif %}>HC (Controle)
+                                            </option>
+                                            <option value="PR" {% if p.tipo=='PR' %}selected{% endif %}>PR (Prodromal)
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="modal-footer border-top-0 pt-0">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                                        data-bs-dismiss="modal">Cancelar</button>
                                     <button type="submit" class="btn btn-navy btn-sm px-3">Salvar Alterações</button>
                                 </div>
                             </form>
@@ -116,7 +142,8 @@
 </div>
 
 <!-- Modal de Cadastro de Novo Paciente -->
-<div class="modal fade" id="modalNovoPaciente" tabindex="-1" aria-labelledby="modalNovoPacienteLabel" aria-hidden="true">
+<div class="modal fade" id="modalNovoPaciente" tabindex="-1" aria-labelledby="modalNovoPacienteLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content border-0 shadow-lg">
             <div class="modal-header bg-white border-bottom-0 pb-0">
@@ -127,16 +154,20 @@
                 <div class="modal-body py-4">
                     <div class="mb-3">
                         <label for="nome_completo" class="form-label fw-semibold text-dark-blue">Nome Completo</label>
-                        <input type="text" class="form-control" id="nome_completo" name="nome_completo" placeholder="Ex: Ana Maria Braga" required style="border-color: var(--grey-border);">
+                        <input type="text" class="form-control" id="nome_completo" name="nome_completo"
+                            placeholder="Ex: Ana Maria Braga" required style="border-color: var(--grey-border);">
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="data_nascimento" class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
-                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required style="border-color: var(--grey-border);">
+                            <label for="data_nascimento" class="form-label fw-semibold text-dark-blue">Data de
+                                Nascimento</label>
+                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required
+                                style="border-color: var(--grey-border);">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="sexo" class="form-label fw-semibold text-dark-blue">Sexo</label>
-                            <select class="form-select" id="sexo" name="sexo" required style="border-color: var(--grey-border);">
+                            <select class="form-select" id="sexo" name="sexo" required
+                                style="border-color: var(--grey-border);">
                                 <option value="" disabled selected>Selecione</option>
                                 <option value="M">Masculino</option>
                                 <option value="F">Feminino</option>
@@ -146,7 +177,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="tipo" class="form-label fw-semibold text-dark-blue">Tipo de Registro Clínico</label>
-                        <select class="form-select" id="tipo" name="tipo" required style="border-color: var(--grey-border);">
+                        <select class="form-select" id="tipo" name="tipo" required
+                            style="border-color: var(--grey-border);">
                             <option value="" disabled selected>Selecione uma classificação</option>
                             <option value="PD">PD (Paciente com Parkinson)</option>
                             <option value="HC">HC (Controle Saudável)</option>
@@ -155,7 +187,8 @@
                     </div>
                 </div>
                 <div class="modal-footer border-top-0 pt-0">
-                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-outline-secondary btn-sm"
+                        data-bs-dismiss="modal">Cancelar</button>
                     <button type="submit" class="btn btn-navy btn-sm px-3">Cadastrar Paciente</button>
                 </div>
             </form>
