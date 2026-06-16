@@ -1,0 +1,240 @@
+/* Importação da fonte Inter */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Paleta de Cores Estrita */
+:root {
+    --navy-primary: #1e3a8a;    /* Azul Marinho Principal */
+    --navy-dark: #0f172a;       /* Azul Marinho Muito Escuro (Sidebar) */
+    --navy-hover: #1e40af;      /* Azul Marinho Destaque / Hover */
+    --white: #ffffff;           /* Branco */
+    --grey-bg: #f8fafc;         /* Fundo Geral - Cinza Muito Claro */
+    --grey-border: #cbd5e1;     /* Bordas - Cinza Claro */
+    --grey-text-muted: #64748b; /* Texto Secundário - Cinza Médio */
+    --grey-hover: #f1f5f9;      /* Fundo Hover - Cinza Médio-Claro */
+    --transition-speed: 0.2s;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--grey-bg);
+    color: var(--navy-dark);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Estrutura Base do Layout */
+.app-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Estilo */
+.app-sidebar {
+    width: 260px;
+    background-color: var(--navy-dark);
+    color: var(--white);
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    border-right: 1px solid rgba(255, 255, 255, 0.05);
+    z-index: 1000;
+}
+
+.sidebar-header {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    padding: 0 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.brand-text {
+    font-weight: 700;
+    font-size: 1.15rem;
+    letter-spacing: -0.5px;
+    color: var(--white);
+}
+
+.sidebar-nav {
+    flex-grow: 1;
+    padding: 1.5rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nav-section-title {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+    color: var(--grey-text-muted);
+    padding: 1rem 0.75rem 0.5rem 0.75rem;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    padding: 0.65rem 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.nav-link-custom:hover {
+    color: var(--white);
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.nav-link-custom.active {
+    color: var(--white);
+    background-color: var(--navy-primary);
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    padding: 1.25rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.8rem;
+}
+
+.footer-text {
+    color: rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+}
+
+/* Área Principal de Conteúdo */
+.app-main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Evita quebra de flexbox com elementos largos */
+}
+
+/* Cabeçalho do App */
+.app-header {
+    height: 70px;
+    background-color: var(--white);
+    border-bottom: 1px solid var(--grey-border);
+    display: flex;
+    align-items: center;
+}
+
+.text-dark-blue {
+    color: var(--navy-dark);
+}
+
+.text-primary-blue {
+    color: var(--navy-primary);
+}
+
+/* Componentes Comuns customizados com a Paleta */
+.card-custom {
+    background-color: var(--white);
+    border: 1px solid var(--grey-border);
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-custom:hover {
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.badge-tipo {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.35em 0.65em;
+    border-radius: 4px;
+}
+
+.badge-tipo-pd {
+    background-color: #fee2e2; /* vermelho pastel, mas queremos respeitar cinza/azul. */
+    color: #991b1b;
+}
+
+/* Vamos redefinir badges de acordo com a paleta: cinza e azul */
+.badge-pd {
+    background-color: rgba(30, 58, 138, 0.1);
+    color: var(--navy-primary);
+    border: 1px solid rgba(30, 58, 138, 0.2);
+}
+
+.badge-hc {
+    background-color: var(--grey-hover);
+    color: var(--navy-dark);
+    border: 1px solid var(--grey-border);
+}
+
+.badge-pr {
+    background-color: var(--navy-dark);
+    color: var(--white);
+}
+
+.btn-navy {
+    background-color: var(--navy-primary);
+    color: var(--white);
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.btn-navy:hover {
+    background-color: var(--navy-hover);
+    color: var(--white);
+}
+
+.table-custom {
+    background-color: var(--white);
+    border: 1px solid var(--grey-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table-custom th {
+    background-color: var(--grey-hover);
+    color: var(--navy-dark);
+    font-weight: 600;
+    border-bottom: 2px solid var(--grey-border);
+}
+
+.table-custom td {
+    vertical-align: middle;
+    border-bottom: 1px solid var(--grey-hover);
+}
+
+/* Responsividade Básica da Sidebar */
+@media (max-width: 768px) {
+    .app-container {
+        flex-direction: column;
+    }
+    .app-sidebar {
+        width: 100%;
+        height: auto;
+    }
+    .sidebar-header {
+        height: 60px;
+    }
+    .sidebar-nav {
+        flex-direction: row;
+        overflow-x: auto;
+        padding: 0.5rem;
+        gap: 0.5rem;
+    }
+    .nav-section-title {
+        display: none;
+    }
+    .nav-link-custom {
+        white-space: nowrap;
+        padding: 0.5rem 0.75rem;
+    }
+    .app-header {
+        height: 60px;
+    }
+}

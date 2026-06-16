@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - Projeto Parkinson{% endblock %}
+
+{% block page_title %}Painel de Controle Principal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Card de Status do Banco de Dados -->
+    <div class="col-12 mb-4">
+        <div class="card-custom border-start border-4 border-primary">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h5 class="fw-bold text-dark-blue mb-1">Status da Conexão de Dados</h5>
+                    <p class="text-muted small mb-0">Esta aplicação está integrada ao banco de dados relacional PostgreSQL do Supabase.</p>
+                </div>
+                <div class="text-end">
+                    <span class="badge {% if 'Erro' in db_status %}bg-danger{% else %}bg-success{% endif %} fs-6 px-3 py-2">
+                        <i class="bi {% if 'Erro' in db_status %}bi-exclamation-triangle{% else %}bi-cloud-check{% endif %} me-1"></i>
+                        {{ db_status }}
+                    </span>
+                    <div class="text-muted small mt-1 fw-medium">{{ db_type }}</div>
+                </div>
+            </div>
+            {% if 'Erro' in db_status %}
+            <div class="alert alert-warning mt-3 mb-0" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                <strong>Dica de Configuração:</strong> Defina a variável de ambiente <code>DATABASE_URL</code> no arquivo <code>.env</code> com a sua string de conexão do Supabase para conectar ao PostgreSQL de produção.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Cards de Estatísticas Rápidas (Exemplos de Estilização) -->
+<div class="row mb-4">
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card-custom text-center h-100 d-flex flex-column justify-content-center py-4">
+            <div class="text-primary-blue fs-1 mb-2"><i class="bi bi-people-fill"></i></div>
+            <h3 class="fw-bold text-dark-blue mb-0">148</h3>
+            <div class="text-muted small">Total de Pacientes</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card-custom text-center h-100 d-flex flex-column justify-content-center py-4">
+            <div class="text-primary-blue fs-1 mb-2"><i class="bi bi-heart-pulse"></i></div>
+            <h3 class="fw-bold text-dark-blue mb-0">45</h3>
+            <div class="text-muted small">Controles Saudáveis (HC)</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card-custom text-center h-100 d-flex flex-column justify-content-center py-4">
+            <div class="text-primary-blue fs-1 mb-2"><i class="bi bi-shield-exclamation"></i></div>
+            <h3 class="fw-bold text-dark-blue mb-0">32</h3>
+            <div class="text-muted small">Prodromal (PR)</div>
+        </div>
+    </div>
+    <div class="col-md-3 col-sm-6 mb-3">
+        <div class="card-custom text-center h-100 d-flex flex-column justify-content-center py-4">
+            <div class="text-primary-blue fs-1 mb-2"><i class="bi bi-activity"></i></div>
+            <h3 class="fw-bold text-dark-blue mb-0">71</h3>
+            <div class="text-muted small">Parkinson (PD)</div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Tabela de Pacientes Recentes (Exemplo de Tabela e Badges) -->
+    <div class="col-lg-8 mb-4">
+        <div class="card-custom h-100">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold text-dark-blue mb-0">Pacientes Adicionados Recentemente</h5>
+                <button class="btn btn-sm btn-navy"><i class="bi bi-plus-lg me-1"></i> Ver Todos</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome Completo</th>
+                            <th>Data Nasc.</th>
+                            <th>Sexo</th>
+                            <th>Tipo de Registro</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="fw-semibold">Carlos Alberto de Souza</td>
+                            <td>12/05/1958</td>
+                            <td>M</td>
+                            <td><span class="badge badge-tipo badge-pd">PD (Parkinson)</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2" title="Editar"><i class="bi bi-pencil-fill small"></i></button>
+                                <button class="btn btn-sm btn-navy py-0 px-2 ms-1" title="Adicionar Exame"><i class="bi bi-journal-plus small"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Maria Eduarda Santos</td>
+                            <td>24/11/1962</td>
+                            <td>F</td>
+                            <td><span class="badge badge-tipo badge-hc">HC (Controle Saudável)</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2" title="Editar"><i class="bi bi-pencil-fill small"></i></button>
+                                <button class="btn btn-sm btn-navy py-0 px-2 ms-1" title="Adicionar Exame"><i class="bi bi-journal-plus small"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold">Roberto Linhares da Silva</td>
+                            <td>03/08/1970</td>
+                            <td>M</td>
+                            <td><span class="badge badge-tipo badge-pr">PR (Prodromal)</span></td>
+                            <td>
+                                <button class="btn btn-sm btn-outline-secondary py-0 px-2" title="Editar"><i class="bi bi-pencil-fill small"></i></button>
+                                <button class="btn btn-sm btn-navy py-0 px-2 ms-1" title="Adicionar Exame"><i class="bi bi-journal-plus small"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel de Ações Rápidas -->
+    <div class="col-lg-4 mb-4">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between">
+            <div>
+                <h5 class="fw-bold text-dark-blue mb-3">Operações Rápidas</h5>
+                <p class="text-muted small mb-4">Selecione uma das ações abaixo para digitação imediata de prontuários clínicos e fichas de acompanhamento.</p>
+                
+                <div class="d-grid gap-2 mb-4">
+                    <button class="btn btn-navy text-start py-2.5 px-3">
+                        <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Paciente
+                    </button>
+                    <button class="btn btn-outline-dark text-start py-2.5 px-3" style="border-color: var(--grey-border);">
+                        <i class="bi bi-grid-fill me-2"></i> Gerenciar Grupos
+                    </button>
+                </div>
+            </div>
+            
+            <div class="border-top pt-3">
+                <h6 class="fw-bold text-dark-blue mb-2">Resumo da Fase 1</h6>
+                <p class="text-muted mb-0" style="font-size: 0.825rem; line-height: 1.4;">
+                    Esta fase estabelece a modelagem física no Supabase contendo 12 tabelas principais (pacientes, grupos, vínculos de grupo e 9 escalas de exames clínicos padronizados).
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

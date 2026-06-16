@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Detalhes do Grupo - Projeto Parkinson{% endblock %}
+
+{% block page_title %}Detalhes do Grupo: {{ grupo.nome }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Card Lateral de Metadados do Grupo -->
+    <div class="col-lg-4 mb-4">
+        <div class="card-custom h-100 d-flex flex-column justify-content-between">
+            <div>
+                <a href="{{ url_for('grupos.grupos') }}" class="btn btn-sm btn-outline-secondary mb-4">
+                    <i class="bi bi-arrow-left me-1"></i> Voltar para Grupos
+                </a>
+                
+                <h4 class="fw-bold text-dark-blue mb-2">{{ grupo.nome }}</h4>
+                <p class="text-muted small">ID do Grupo: #{{ grupo.id }}</p>
+                
+                <div class="border-top pt-4 mt-4">
+                    <div class="d-flex align-items-center mb-3">
+                        <i class="bi bi-people-fill text-primary-blue fs-4 me-3"></i>
+                        <div>
+                            <div class="fw-bold text-dark-blue">{{ vinculos|length }}</div>
+                            <div class="text-muted small">Total de Pacientes Vinculados</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="border-top pt-3 text-muted small">
+                <span>Criado no sistema • Acompanhamento Viva</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabela de Pacientes Vinculados -->
+    <div class="col-lg-8 mb-4">
+        <div class="card-custom h-100">
+            <h5 class="fw-bold text-dark-blue mb-4">Membros e Participantes do Grupo</h5>
+            
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome do Paciente</th>
+                            <th>Tipo</th>
+                            <th>Data de Início</th>
+                            <th>Data de Fim</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in vinculos %}
+                        <tr>
+                            <td class="fw-semibold">
+                                <i class="bi bi-person-fill text-muted me-2"></i>{{ v.paciente.nome_completo }}
+                            </td>
+                            <td>
+                                {% if v.paciente.tipo == 'PD' %}
+                                <span class="badge badge-tipo badge-pd">PD (Parkinson)</span>
+                                {% elif v.paciente.tipo == 'HC' %}
+                                <span class="badge badge-tipo badge-hc">HC (Controle)</span>
+                                {% else %}
+                                <span class="badge badge-tipo badge-pr">PR (Prodromal)</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ v.data_inicio.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ v.data_fim.strftime('%d/%m/%Y') if v.data_fim else '-' }}</td>
+                            <td>
+                                {% if v.data_fim == None or v.data_fim >= v.data_inicio %}
+                                    {% if v.data_fim == None %}
+                                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-20 px-2 py-1">Ativo</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 px-2 py-1">Concluído</span>
+                                    {% endif %}
+                                {% else %}
+                                    <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-20 px-2 py-1">Inativo</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-person-slash fs-4 d-block mb-2 text-muted"></i>
+                                Nenhum paciente vinculado a este grupo de atividades até o momento.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

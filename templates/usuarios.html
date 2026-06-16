@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}Gestão de Usuários - Projeto Parkinson{% endblock %}
+
+{% block page_title %}Gestão de Usuários e Acessos{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Formulário de Cadastro de Usuário -->
+    <div class="col-lg-4 mb-4">
+        <div class="card-custom">
+            <h5 class="fw-bold text-dark-blue mb-4">Cadastrar Novo Usuário</h5>
+            <form action="{{ url_for('auth.usuarios') }}" method="POST">
+                <div class="mb-3">
+                    <label for="username" class="form-label fw-semibold text-dark-blue">Nome de Usuário</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Ex: joao_clinico" required style="border-color: var(--grey-border);">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="password" class="form-label fw-semibold text-dark-blue">Senha de Acesso</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Defina uma senha" required style="border-color: var(--grey-border);">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="role" class="form-label fw-semibold text-dark-blue">Nível de Acesso (Papel)</label>
+                    <select class="form-select" id="role" name="role" required style="border-color: var(--grey-border);">
+                        <option value="" disabled selected>Selecione um papel</option>
+                        <option value="usuario">Clínico (Usuário Padrão)</option>
+                        <option value="admin">Administrador do Sistema</option>
+                    </select>
+                </div>
+                
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-navy py-2">
+                        <i class="bi bi-person-plus-fill me-1"></i> Criar Conta
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tabela de Listagem de Usuários -->
+    <div class="col-lg-8 mb-4">
+        <div class="card-custom">
+            <h5 class="fw-bold text-dark-blue mb-4">Usuários Registrados</h5>
+            
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Nome de Usuário</th>
+                            <th>Nível de Acesso</th>
+                            <th>Data de Cadastro</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in usuarios %}
+                        <tr>
+                            <td class="fw-semibold">
+                                <i class="bi bi-person text-primary-blue me-2"></i>{{ u.username }}
+                            </td>
+                            <td>
+                                {% if u.role == 'admin' %}
+                                <span class="badge badge-tipo badge-pr">Administrador</span>
+                                {% else %}
+                                <span class="badge badge-tipo badge-hc">Clínico</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-muted">{{ u.criado_em[:19].replace('T', ' ') if u.criado_em else 'N/D' }}</td>
+                            <td class="text-center">
+                                {% if u.id == current_user.id %}
+                                <span class="badge bg-secondary text-white py-1.5" style="font-size: 0.75rem;">Conta Ativa</span>
+                                {% else %}
+                                <form action="{{ url_for('auth.deletar_usuario', user_id=u.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este usuário permanente?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2" title="Excluir Usuário">
+                                        <i class="bi bi-trash-fill small"></i> Deletar
+                                    </button>
+                                </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

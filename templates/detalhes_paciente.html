@@ -1,0 +1,207 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil do Paciente - Projeto Parkinson{% endblock %}
+
+{% block page_title %}Perfil Clínico do Paciente{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Coluna da Esquerda: Dados Cadastrais e Vinculação -->
+    <div class="col-lg-4 mb-4">
+        <!-- Voltar -->
+        <a href="{{ url_for('pacientes.pacientes') }}" class="btn btn-sm btn-outline-secondary mb-4 w-100 text-start">
+            <i class="bi bi-arrow-left me-1"></i> Voltar para Pacientes
+        </a>
+
+        <!-- Card de Informações Cadastrais -->
+        <div class="card-custom mb-4">
+            <div class="text-center pb-3 border-bottom mb-4">
+                <i class="bi bi-person-circle fs-1 text-primary-blue mb-2 d-block"></i>
+                <h5 class="fw-bold text-dark-blue mb-1">{{ paciente.nome_completo }}</h5>
+                <div>
+                    {% if paciente.tipo == 'PD' %}
+                    <span class="badge badge-tipo badge-pd">PD (Parkinson)</span>
+                    {% elif paciente.tipo == 'HC' %}
+                    <span class="badge badge-tipo badge-hc">HC (Controle)</span>
+                    {% else %}
+                    <span class="badge badge-tipo badge-pr">PR (Prodromal)</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <small class="text-muted d-block">Identificador (UUID)</small>
+                <code class="small text-dark-blue">{{ paciente.id }}</code>
+            </div>
+            
+            <div class="row mb-3">
+                <div class="col-6">
+                    <small class="text-muted d-block">Nascimento</small>
+                    <span class="fw-semibold text-dark-blue">{{ paciente.data_nascimento.strftime('%d/%m/%Y') }}</span>
+                </div>
+                <div class="col-6">
+                    <small class="text-muted d-block">Idade</small>
+                    <span class="fw-semibold text-dark-blue">{{ idade }} anos</span>
+                </div>
+            </div>
+
+            <div>
+                <small class="text-muted d-block">Sexo</small>
+                <span class="fw-semibold text-dark-blue">
+                    {% if paciente.sexo == 'M' %}Masculino{% elif paciente.sexo == 'F' %}Feminino{% else %}Outro{% endif %}
+                </span>
+            </div>
+        </div>
+
+        <!-- Card para Adicionar a Novo Grupo -->
+        <div class="card-custom">
+            <h5 class="fw-bold text-dark-blue mb-3">Vincular a Grupo</h5>
+            {% if grupos_disponiveis %}
+            <form action="{{ url_for('pacientes.vincular_grupo', paciente_id=paciente.id) }}" method="POST">
+                <div class="mb-3">
+                    <label for="id_grupo" class="form-label fw-semibold text-dark-blue">Selecionar Grupo de Atividade</label>
+                    <select class="form-select" id="id_grupo" name="id_grupo" required style="border-color: var(--grey-border);">
+                        <option value="" disabled selected>Selecione um grupo...</option>
+                        {% for g in grupos_disponiveis %}
+                        <option value="{{ g.id }}">{{ g.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label for="data_inicio" class="form-label fw-semibold text-dark-blue">Data de Início</label>
+                    <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_hoje }}" required style="border-color: var(--grey-border);">
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-navy py-2">
+                        <i class="bi bi-link-45deg me-1"></i> Vincular ao Grupo
+                    </button>
+                </div>
+            </form>
+            {% else %}
+            <div class="alert alert-info border-0 mb-0 py-3" role="alert">
+                <i class="bi bi-info-circle-fill me-2"></i>
+                Este paciente já está ativo em todos os grupos de atividades cadastrados.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Coluna da Direita: Histórico de Grupos e Placeholder de Exames -->
+    <div class="col-lg-8 mb-4">
+        <!-- Card de Histórico de Participação em Grupos -->
+        <div class="card-custom mb-4">
+            <h5 class="fw-bold text-dark-blue mb-4">Participação em Grupos</h5>
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Grupo</th>
+                            <th>Data de Início</th>
+                            <th>Data de Fim</th>
+                            <th>Status</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for v in vinculos %}
+                        <tr>
+                            <td class="fw-semibold text-dark-blue">{{ v.grupo.nome }}</td>
+                            <td>{{ v.data_inicio.strftime('%d/%m/%Y') }}</td>
+                            <td>{{ v.data_fim.strftime('%d/%m/%Y') if v.data_fim else '-' }}</td>
+                            <td>
+                                {% if v.data_fim == None %}
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-20 px-2 py-1">Ativo</span>
+                                {% else %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 px-2 py-1">Desligado</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                {% if v.data_fim == None %}
+                                <!-- Botão que abre modal de desligamento -->
+                                <button class="btn btn-sm btn-outline-danger py-0 px-2" data-bs-toggle="modal" data-bs-target="#modalDesligar-{{ v.id }}" title="Registrar Desligamento">
+                                    <i class="bi bi-box-arrow-right small"></i> Desligar
+                                </button>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                        </tr>
+
+                        <!-- Modal de Desligamento para este Vínculo -->
+                        <div class="modal fade" id="modalDesligar-{{ v.id }}" tabindex="-1" aria-labelledby="labelDesligar-{{ v.id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content border-0 shadow-lg">
+                                    <div class="modal-header bg-white border-bottom-0 pb-0">
+                                        <h5 class="modal-title fw-bold text-dark-blue" id="labelDesligar-{{ v.id }}">Desligar Paciente do Grupo</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="{{ url_for('pacientes.desligar_grupo', vinculo_id=v.id) }}" method="POST">
+                                        <div class="modal-body py-4">
+                                            <p class="text-muted small">Defina a data final da participação de <strong>{{ paciente.nome_completo }}</strong> no grupo <strong>{{ v.grupo.nome }}</strong>.</p>
+                                            <div class="mb-3">
+                                                <label for="data_fim-{{ v.id }}" class="form-label fw-semibold text-dark-blue">Data de Encerramento (Desligamento)</label>
+                                                <input type="date" class="form-control" id="data_fim-{{ v.id }}" name="data_fim" value="{{ data_hoje }}" min="{{ v.data_inicio.strftime('%Y-%m-%d') }}" required style="border-color: var(--grey-border);">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer border-top-0 pt-0">
+                                            <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                            <button type="submit" class="btn btn-danger btn-sm px-3">Confirmar Desligamento</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center py-4 text-muted">
+                                <i class="bi bi-link-45deg fs-4 d-block mb-2 text-muted"></i>
+                                Este paciente não está associado a nenhum grupo.
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Seção "Exames Realizados" -->
+        <div class="card-custom">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold text-dark-blue mb-0">Exames Realizados</h5>
+                <a href="{{ url_for('exames.cadastro_rapido_exames', paciente_id=paciente.id) }}" class="btn btn-sm btn-navy">
+                    <i class="bi bi-file-earmark-plus-fill me-1"></i> Lançar Exames
+                </a>
+            </div>
+            
+            {% if exames %}
+            <div class="table-responsive">
+                <table class="table table-hover table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th>Tipo de Exame</th>
+                            <th>Data da Avaliação</th>
+                            <th>Nota Final / Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in exames %}
+                        <tr>
+                            <td class="fw-bold text-dark-blue">{{ e.tipo }}</td>
+                            <td>{{ e.data.strftime('%d/%m/%Y') }}</td>
+                            <td class="fw-semibold text-primary-blue">{{ e.nota }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="text-center py-5 text-muted border border-dashed rounded-3" style="border-color: var(--grey-border) !important;">
+                <i class="bi bi-file-earmark-medical fs-1 mb-3 text-secondary"></i>
+                <h6 class="fw-semibold text-dark-blue">Nenhum Exame Registrado</h6>
+                <p class="small text-muted mb-0 px-4">Use o botão "Lançar Exames" acima para cadastrar resultados clínicos do paciente.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

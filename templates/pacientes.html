@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Pacientes - Projeto Parkinson{% endblock %}
+
+{% block page_title %}Pacientes Cadastrados{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h5 class="fw-bold text-dark-blue mb-0">Listagem Geral de Prontuários</h5>
+    <button class="btn btn-navy" data-bs-toggle="modal" data-bs-target="#modalNovoPaciente">
+        <i class="bi bi-person-plus-fill me-1"></i> Novo Paciente
+    </button>
+</div>
+
+<div class="card-custom">
+    <div class="table-responsive">
+        <table class="table table-hover table-custom mb-0">
+            <thead>
+                <tr>
+                    <th>Nome Completo</th>
+                    <th>Data Nasc.</th>
+                    <th>Sexo</th>
+                    <th>Tipo</th>
+                    <th>Identificador Único (UUID)</th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for p in pacientes %}
+                <tr>
+                    <td class="fw-semibold text-dark-blue">
+                        <i class="bi bi-person-bounding-box text-muted me-2"></i>{{ p.nome_completo }}
+                    </td>
+                    <td>{{ p.data_nascimento.strftime('%d/%m/%Y') }}</td>
+                    <td>
+                        {% if p.sexo == 'M' %}Masculino{% elif p.sexo == 'F' %}Feminino{% else %}Outro{% endif %}
+                    </td>
+                    <td>
+                        {% if p.tipo == 'PD' %}
+                        <span class="badge badge-tipo badge-pd">PD (Parkinson)</span>
+                        {% elif p.tipo == 'HC' %}
+                        <span class="badge badge-tipo badge-hc">HC (Controle)</span>
+                        {% else %}
+                        <span class="badge badge-tipo badge-pr">PR (Prodromal)</span>
+                        {% endif %}
+                    </td>
+                    <td><code class="small text-muted" style="font-size: 0.75rem;">{{ p.id }}</code></td>
+                    <td class="text-center">
+                        <div class="d-inline-flex gap-1">
+                            <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=p.id) }}" class="btn btn-sm btn-navy py-1 px-2.5" title="Ver Detalhes">
+                                <i class="bi bi-eye-fill"></i> Detalhes
+                            </a>
+                            <button class="btn btn-sm btn-outline-secondary py-1 px-2.5" data-bs-toggle="modal" data-bs-target="#modalEditarPaciente-{{ p.id }}" title="Editar Dados">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Modal de Edição de Paciente -->
+                <div class="modal fade" id="modalEditarPaciente-{{ p.id }}" tabindex="-1" aria-labelledby="modalEditarLabel-{{ p.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content border-0 shadow-lg">
+                            <div class="modal-header bg-white border-bottom-0 pb-0">
+                                <h5 class="modal-title fw-bold text-dark-blue" id="modalEditarLabel-{{ p.id }}">Editar Cadastro de Paciente</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form action="{{ url_for('pacientes.editar_paciente', paciente_id=p.id) }}" method="POST">
+                                <div class="modal-body py-4">
+                                    <div class="mb-3">
+                                        <label for="nome_completo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Nome Completo</label>
+                                        <input type="text" class="form-control" id="nome_completo-{{ p.id }}" name="nome_completo" value="{{ p.nome_completo }}" required style="border-color: var(--grey-border);">
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="data_nascimento-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
+                                            <input type="date" class="form-control" id="data_nascimento-{{ p.id }}" name="data_nascimento" value="{{ p.data_nascimento.strftime('%Y-%m-%d') }}" required style="border-color: var(--grey-border);">
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="sexo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Sexo</label>
+                                            <select class="form-select" id="sexo-{{ p.id }}" name="sexo" required style="border-color: var(--grey-border);">
+                                                <option value="M" {% if p.sexo == 'M' %}selected{% endif %}>Masculino</option>
+                                                <option value="F" {% if p.sexo == 'F' %}selected{% endif %}>Feminino</option>
+                                                <option value="O" {% if p.sexo == 'O' %}selected{% endif %}>Outro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="tipo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Tipo de Registro Clínico</label>
+                                        <select class="form-select" id="tipo-{{ p.id }}" name="tipo" required style="border-color: var(--grey-border);">
+                                            <option value="PD" {% if p.tipo == 'PD' %}selected{% endif %}>PD (Paciente com Parkinson)</option>
+                                            <option value="HC" {% if p.tipo == 'HC' %}selected{% endif %}>HC (Controle Saudável)</option>
+                                            <option value="PR" {% if p.tipo == 'PR' %}selected{% endif %}>PR (Familiar/Prodromal/Outro)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="modal-footer border-top-0 pt-0">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-navy btn-sm px-3">Salvar Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center py-5 text-muted">
+                        <i class="bi bi-people fs-2 d-block mb-3"></i>
+                        Nenhum paciente cadastrado no sistema ainda.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal de Cadastro de Novo Paciente -->
+<div class="modal fade" id="modalNovoPaciente" tabindex="-1" aria-labelledby="modalNovoPacienteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-white border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark-blue" id="modalNovoPacienteLabel">Cadastrar Paciente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('pacientes.pacientes') }}" method="POST">
+                <div class="modal-body py-4">
+                    <div class="mb-3">
+                        <label for="nome_completo" class="form-label fw-semibold text-dark-blue">Nome Completo</label>
+                        <input type="text" class="form-control" id="nome_completo" name="nome_completo" placeholder="Ex: Ana Maria Braga" required style="border-color: var(--grey-border);">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="data_nascimento" class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
+                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required style="border-color: var(--grey-border);">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="sexo" class="form-label fw-semibold text-dark-blue">Sexo</label>
+                            <select class="form-select" id="sexo" name="sexo" required style="border-color: var(--grey-border);">
+                                <option value="" disabled selected>Selecione</option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                                <option value="O">Outro</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tipo" class="form-label fw-semibold text-dark-blue">Tipo de Registro Clínico</label>
+                        <select class="form-select" id="tipo" name="tipo" required style="border-color: var(--grey-border);">
+                            <option value="" disabled selected>Selecione uma classificação</option>
+                            <option value="PD">PD (Paciente com Parkinson)</option>
+                            <option value="HC">HC (Controle Saudável)</option>
+                            <option value="PR">PR (Familiar/Prodromal/Outro)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-navy btn-sm px-3">Cadastrar Paciente</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
