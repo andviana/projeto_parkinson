@@ -127,45 +127,18 @@
             </div>
             {% endif %}
         </div>
-
-        <!-- Card para Adicionar a Novo Grupo -->
-        <div class="card-custom">
-            <h5 class="fw-bold text-dark-blue mb-3">Vincular a Grupo</h5>
-            {% if grupos_disponiveis %}
-            <form action="{{ url_for('pacientes.vincular_grupo', paciente_id=paciente.id) }}" method="POST">
-                <div class="mb-3">
-                    <label for="id_grupo" class="form-label fw-semibold text-dark-blue">Selecionar Grupo de Atividade</label>
-                    <select class="form-select" id="id_grupo" name="id_grupo" required style="border-color: var(--grey-border);">
-                        <option value="" disabled selected>Selecione um grupo...</option>
-                        {% for g in grupos_disponiveis %}
-                        <option value="{{ g.id }}">{{ g.nome }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="mb-4">
-                    <label for="data_inicio" class="form-label fw-semibold text-dark-blue">Data de Início</label>
-                    <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_hoje }}" required style="border-color: var(--grey-border);">
-                </div>
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-navy py-2">
-                        <i class="bi bi-link-45deg me-1"></i> Vincular ao Grupo
-                    </button>
-                </div>
-            </form>
-            {% else %}
-            <div class="alert alert-info border-0 mb-0 py-3" role="alert">
-                <i class="bi bi-info-circle-fill me-2"></i>
-                Este paciente já está ativo em todos os grupos de atividades cadastrados.
-            </div>
-            {% endif %}
-        </div>
     </div>
 
     <!-- Coluna da Direita: Histórico de Grupos e Placeholder de Exames -->
     <div class="col-lg-8 mb-4">
         <!-- Card de Histórico de Participação em Grupos -->
         <div class="card-custom mb-4">
-            <h5 class="fw-bold text-dark-blue mb-4">Participação em Grupos</h5>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h5 class="fw-bold text-dark-blue mb-0">Participação em Grupos</h5>
+                <button class="btn btn-sm btn-navy px-3" data-bs-toggle="modal" data-bs-target="#modalVincularGrupo">
+                    <i class="bi bi-link-45deg me-1"></i> Vincular a Grupo
+                </button>
+            </div>
             <div class="table-responsive">
                 <table class="table table-hover table-custom mb-0">
                     <thead>
@@ -276,6 +249,50 @@
                 <p class="small text-muted mb-0 px-4">Use o botão "Lançar Exames" acima para cadastrar resultados clínicos do paciente.</p>
             </div>
             {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Vincular Paciente a Grupo -->
+<div class="modal fade" id="modalVincularGrupo" tabindex="-1" aria-labelledby="modalVincularGrupoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-white border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark-blue" id="modalVincularGrupoLabel">Vincular Paciente a Grupo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('pacientes.vincular_grupo', paciente_id=paciente.id) }}" method="POST">
+                <div class="modal-body">
+                    {% if grupos_disponiveis %}
+                    <div class="mb-3">
+                        <label for="id_grupo" class="form-label fw-semibold text-dark-blue">Selecionar Grupo de Atividade</label>
+                        <select class="form-select" id="id_grupo" name="id_grupo" required style="border-color: var(--grey-border);">
+                            <option value="" disabled selected>Selecione um grupo...</option>
+                            {% for g in grupos_disponiveis %}
+                            <option value="{{ g.id }}">{{ g.nome }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="data_inicio" class="form-label fw-semibold text-dark-blue">Data de Início</label>
+                        <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_hoje }}" required style="border-color: var(--grey-border);">
+                    </div>
+                    {% else %}
+                    <div class="alert alert-info border-0 mb-0 py-3" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        Este paciente já está ativo em todos os grupos de atividades cadastrados.
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    {% if grupos_disponiveis %}
+                    <button type="submit" class="btn btn-navy">
+                        <i class="bi bi-link-45deg me-1"></i> Vincular ao Grupo
+                    </button>
+                    {% endif %}
+                </div>
+            </form>
         </div>
     </div>
 </div>
