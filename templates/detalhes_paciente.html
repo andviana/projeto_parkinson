@@ -53,6 +53,81 @@
             </div>
         </div>
 
+        <!-- Card de Ficha de Dados Clínicos -->
+        <div class="card-custom mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark-blue mb-0">Dados Clínicos</h5>
+                <a href="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" class="btn btn-xs btn-outline-primary py-0 px-2 small" title="Editar Ficha" style="font-size: 0.75rem;">
+                    <i class="bi bi-pencil-square small"></i> {% if dados_clinicos %}Editar{% else %}Preencher{% endif %}
+                </a>
+            </div>
+            
+            {% if dados_clinicos %}
+            <div class="mb-2">
+                <small class="text-muted d-block">Tempo de Sintomas</small>
+                <span class="fw-semibold text-dark-blue">
+                    {% if dados_clinicos.tempo_inicio_sintomas_anos is not none %}
+                        {{ dados_clinicos.tempo_inicio_sintomas_anos }} anos
+                    {% else %}
+                        Não informado
+                    {% endif %}
+                </span>
+            </div>
+            
+            <div class="mb-2">
+                <small class="text-muted d-block">Uso Regular de Café</small>
+                <span class="fw-semibold text-dark-blue">
+                    {% if dados_clinicos.uso_regular_cafe %}
+                        Sim ({{ dados_clinicos.frequencia_por_dia }}x/dia)
+                    {% else %}
+                        Não
+                    {% endif %}
+                </span>
+            </div>
+
+            <div class="mb-2">
+                <small class="text-muted d-block">Cirurgia DBS/DP</small>
+                <span class="fw-semibold text-dark-blue">
+                    {{ 'Sim' if dados_clinicos.cirurgia_dp else 'Não' }}
+                </span>
+            </div>
+
+            <div class="mb-2">
+                <small class="text-muted d-block">Sintomas Cadastrados</small>
+                {% if dados_clinicos.sintomas_nomes %}
+                    <div class="d-flex flex-wrap gap-1 mt-1">
+                        {% for s in dados_clinicos.sintomas_nomes %}
+                            <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-20 px-2 py-1 small text-capitalize">{{ s }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <span class="text-muted small">Nenhum</span>
+                {% endif %}
+            </div>
+
+            <div>
+                <small class="text-muted d-block">Localização Início</small>
+                {% if dados_clinicos.localizacoes_nomes %}
+                    <div class="d-flex flex-wrap gap-1 mt-1">
+                        {% for l in dados_clinicos.localizacoes_nomes %}
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-20 px-2 py-1 small">{{ l }}</span>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <span class="text-muted small">Nenhuma</span>
+                {% endif %}
+            </div>
+            {% else %}
+            <div class="text-center py-3 text-muted border border-dashed rounded-3" style="border-color: var(--grey-border) !important;">
+                <i class="bi bi-clipboard-pulse fs-3 mb-2 text-secondary d-block"></i>
+                <span class="small d-block mb-2">Sem ficha cadastrada</span>
+                <a href="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" class="btn btn-sm btn-navy px-3">
+                    <i class="bi bi-plus-lg small me-1"></i> Preencher Ficha
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
         <!-- Card para Adicionar a Novo Grupo -->
         <div class="card-custom">
             <h5 class="fw-bold text-dark-blue mb-3">Vincular a Grupo</h5>

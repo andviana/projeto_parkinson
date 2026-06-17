@@ -2,7 +2,7 @@
 
 {% block title %}Dashboard - Projeto Parkinson{% endblock %}
 
-{% block page_title %}Painel de Controle Principal{% endblock %}
+{% block page_title %}Painel de Controle{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -80,7 +80,6 @@
                 <table class="table table-hover table-custom mb-0">
                     <thead>
                         <tr>
-                            <th>Identificador (ID)</th>
                             <th>Nome do Grupo</th>
                             <th>Membros Ativos</th>
                             <th class="text-center">Ações</th>
@@ -89,17 +88,12 @@
                     <tbody>
                         {% for g in grupos %}
                         <tr>
-                            <td><span class="badge badge-tipo badge-hc">ID #{{ g.id }}</span></td>
                             <td class="fw-semibold text-dark-blue">{{ g.nome }}</td>
                             <td>{{ g.vinculos_count }} pacientes</td>
                             <td class="text-center">
                                 <a href="{{ url_for('grupos.detalhes_grupo', grupo_id=g.id) }}"
                                     class="btn btn-sm btn-navy py-1 px-2.5" title="Mostrar Detalhes do Grupo">
                                     <i class="bi bi-eye-fill me-1"></i> Detalhes
-                                </a>
-                                <a href="{{ url_for('pacientes.pacientes') }}"
-                                    class="btn btn-sm btn-outline-secondary py-1 px-2.5 ms-1" title="Vincular Paciente">
-                                    <i class="bi bi-link-45deg me-1"></i> Vincular Paciente
                                 </a>
                             </td>
                         </tr>

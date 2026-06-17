@@ -53,7 +53,8 @@ def detalhes_paciente(paciente_id):
                            vinculos=details['vinculos'], 
                            grupos_disponiveis=details['grupos_disponiveis'],
                            data_hoje=details['data_hoje'],
-                           exames=details['exames'])
+                           exames=details['exames'],
+                           dados_clinicos=details.get('dados_clinicos'))
 
 
 @pacientes_bp.route('/pacientes/<string:paciente_id>/vincular', methods=['POST'])

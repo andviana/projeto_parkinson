@@ -33,12 +33,14 @@ def create_app():
     from blueprints.grupos import grupos_bp
     from blueprints.pacientes import pacientes_bp
     from blueprints.exames import exames_bp
+    from blueprints.clinical_data import clinical_data_bp
     
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(grupos_bp)
     app.register_blueprint(pacientes_bp)
     app.register_blueprint(exames_bp)
+    app.register_blueprint(clinical_data_bp)
 
     @app.errorhandler(403)
     def forbidden(e):

@@ -60,7 +60,48 @@ def seed():
     except Exception as e:
         print(f"❌ Erro ao semear grupos: {e}")
 
-    # 3. Mensagem de finalização
+    # 3. Inserção de Domínios Clínicos
+    print("\n[3/3] Verificando domínios de dados clínicos...")
+    try:
+        # Sintomas
+        res_sintomas = supabase.table('sintomas_dominio').select('*').execute()
+        if len(res_sintomas.data) == 0:
+            sintomas = [
+                {'nome': 'bradicinesia'},
+                {'nome': 'rigidez'},
+                {'nome': 'tremor'},
+                {'nome': 'instabilidade postural'},
+                {'nome': 'fraqueza muscular'},
+                {'nome': 'formigamento'},
+                {'nome': 'outros'}
+            ]
+            supabase.table('sintomas_dominio').insert(sintomas).execute()
+            print("✔ Sintomas de domínio semeados com sucesso!")
+        else:
+            print(f"ℹ Sintomas de domínio já existem ({len(res_sintomas.data)} cadastrados).")
+            
+        # Localizações
+        res_locs = supabase.table('localizacoes_dominio').select('*').execute()
+        if len(res_locs.data) == 0:
+            localizacoes = [
+                {'sigla': 'MSD'},
+                {'sigla': 'MIE'},
+                {'sigla': 'MSE'},
+                {'sigla': 'MS'},
+                {'sigla': 'MI'},
+                {'sigla': 'MID'},
+                {'sigla': 'QUEIXO'},
+                {'sigla': 'CABEÇA'},
+                {'sigla': 'OUTRO'}
+            ]
+            supabase.table('localizacoes_dominio').insert(localizacoes).execute()
+            print("✔ Localizações de domínio semeadas com sucesso!")
+        else:
+            print(f"ℹ Localizações de domínio já existem ({len(res_locs.data)} cadastradas).")
+    except Exception as e:
+        print(f"❌ Erro ao semear domínios clínicos: {e}")
+
+    # 4. Mensagem de finalização
     print("\n--- PROCESSO DE SEMEAMENTO CONCLUÍDO ---")
 
 if __name__ == '__main__':

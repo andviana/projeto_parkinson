@@ -2,11 +2,11 @@
 
 {% block title %}Pacientes - Projeto Parkinson{% endblock %}
 
-{% block page_title %}Pacientes Cadastrados{% endblock %}
+{% block page_title %}Paciente{% endblock %}
 
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="fw-bold text-dark-blue mb-0">Listagem Geral de Prontuários</h5>
+    <h5 class="fw-bold text-dark-blue mb-0">Listagem Geral de Pacientes</h5>
     <button class="btn btn-navy" data-bs-toggle="modal" data-bs-target="#modalNovoPaciente">
         <i class="bi bi-person-plus-fill me-1"></i> Novo Paciente
     </button>
@@ -21,7 +21,6 @@
                     <th>Data Nasc.</th>
                     <th>Sexo</th>
                     <th>Tipo</th>
-                    <th>Identificador Único (UUID)</th>
                     <th class="text-center">Ações</th>
                 </tr>
             </thead>
@@ -29,7 +28,12 @@
                 {% for p in pacientes %}
                 <tr>
                     <td class="fw-semibold text-dark-blue">
-                        <i class="bi bi-person-bounding-box text-muted me-2"></i>{{ p.nome_completo }}
+                        <div>
+                            <i class="bi bi-person-bounding-box text-muted me-2"></i>{{ p.nome_completo }}
+                        </div>
+                        <div>
+                            <code class="small text-muted" style="font-size: 0.75rem;">{{ p.id }}</code>
+                        </div>
                     </td>
                     <td>{{ p.data_nascimento.strftime('%d/%m/%Y') }}</td>
                     <td>
@@ -44,7 +48,7 @@
                         <span class="badge badge-tipo badge-pr">PR (Prodromal)</span>
                         {% endif %}
                     </td>
-                    <td><code class="small text-muted" style="font-size: 0.75rem;">{{ p.id }}</code></td>
+
                     <td class="text-center">
                         <div class="d-inline-flex gap-1">
                             <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=p.id) }}"

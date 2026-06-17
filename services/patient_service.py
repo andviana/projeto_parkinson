@@ -1,5 +1,5 @@
 import datetime
-from models import patient_repo, group_repo, exam_repo
+from models import patient_repo, group_repo, exam_repo, clinical_data_repo
 
 def list_patients():
     lista = patient_repo.list_all_patients()
@@ -80,13 +80,26 @@ def get_patient_details(paciente_id):
             
     exams_list.sort(key=lambda x: x['data'], reverse=True)
     
+    # Buscar ficha de dados clínicos e mapear domínios
+    dados_clinicos = clinical_data_repo.get_dados_clinicos(paciente_id)
+    if dados_clinicos:
+        sintomas_all = clinical_data_repo.get_sintomas_dominio()
+        localizacoes_all = clinical_data_repo.get_localizacoes_dominio()
+        
+        sintomas_map = {s['id']: s['nome'] for s in sintomas_all}
+        localizacoes_map = {l['id']: l['sigla'] for l in localizacoes_all}
+        
+        dados_clinicos['sintomas_nomes'] = [sintomas_map.get(sid) for sid in dados_clinicos.get('sintomas_ids', []) if sid in sintomas_map]
+        dados_clinicos['localizacoes_nomes'] = [localizacoes_map.get(lid) for lid in dados_clinicos.get('localizacoes_ids', []) if lid in localizacoes_map]
+    
     return {
         'paciente': paciente,
         'idade': idade,
         'vinculos': vinculos,
         'grupos_disponiveis': grupos_disponiveis,
         'data_hoje': data_hoje,
-        'exames': exams_list
+        'exames': exams_list,
+        'dados_clinicos': dados_clinicos
     }
 
 

@@ -129,3 +129,54 @@ CREATE TABLE beck (
     nota_final NUMERIC(5,2) NOT NULL
 );
 CREATE INDEX idx_beck_paciente_data ON beck (id_paciente, data_exame);
+
+-- 10. Tabelas de Ficha de Dados Clínicos
+
+-- Tabela de Domínio: Sintomas Iniciais
+CREATE TABLE sintomas_dominio (
+    id SERIAL PRIMARY KEY,
+    nome VARCHAR(100) UNIQUE NOT NULL
+);
+
+-- Tabela de Domínio: Localizações de Início
+CREATE TABLE localizacoes_dominio (
+    id SERIAL PRIMARY KEY,
+    sigla VARCHAR(20) UNIQUE NOT NULL
+);
+
+-- Tabela Principal de Dados Clínicos (1:1 com Paciente)
+CREATE TABLE dados_clinicos (
+    id_paciente UUID PRIMARY KEY REFERENCES pacientes(id) ON DELETE CASCADE,
+    tempo_inicio_sintomas_anos INT NULL,
+    resposta_motora VARCHAR(50) CHECK (resposta_motora IN ('nenhuma melhora', 'pouca melhora', 'melhora parcial', 'melhora total')) NULL,
+    tolerancia_levodopa VARCHAR(50) CHECK (tolerancia_levodopa IN ('sem problemas', 'teve dificuldade', 'intolerancia')) NULL,
+    uso_regular_cafe BOOLEAN DEFAULT FALSE,
+    frequencia_por_dia INT DEFAULT 0,
+    cirurgia_dp BOOLEAN DEFAULT FALSE,
+    abuso_substancia BOOLEAN DEFAULT FALSE,
+    qual_substancia VARCHAR(255) NULL,
+    ancestrais VARCHAR(255) NULL,
+    familiar_com_dp VARCHAR(20) CHECK (familiar_com_dp IN ('sim', 'não', 'não sabe')) DEFAULT 'não',
+    qual_familiar_dp VARCHAR(255) NULL,
+    familiar_com_tremor VARCHAR(20) CHECK (familiar_com_tremor IN ('sim', 'não', 'não sabe')) DEFAULT 'não',
+    qual_familiar_tremor VARCHAR(255) NULL,
+    criado_em TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de Relacionamento Many-to-Many: Sintomas Iniciais
+CREATE TABLE dados_clinicos_sintomas (
+    id_paciente UUID REFERENCES dados_clinicos(id_paciente) ON DELETE CASCADE,
+    id_sintoma INT REFERENCES sintomas_dominio(id) ON DELETE CASCADE,
+    PRIMARY KEY (id_paciente, id_sintoma)
+);
+
+-- Tabela de Relacionamento Many-to-Many: Localizações
+CREATE TABLE dados_clinicos_localizacoes (
+    id_paciente UUID REFERENCES dados_clinicos(id_paciente) ON DELETE CASCADE,
+    id_localizacao INT REFERENCES localizacoes_dominio(id) ON DELETE CASCADE,
+    PRIMARY KEY (id_paciente, id_localizacao)
+);
+
+-- Índices adicionais para otimização
+CREATE INDEX idx_dados_clinicos_sintomas ON dados_clinicos_sintomas (id_paciente);
+CREATE INDEX idx_dados_clinicos_localizacoes ON dados_clinicos_localizacoes (id_paciente);

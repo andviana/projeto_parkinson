@@ -66,6 +66,74 @@ class SupabaseMockClient:
                     FOREIGN KEY (id_paciente) REFERENCES pacientes (id)
                 )
             ''')
+
+        # Novas tabelas de Ficha de Dados Clínicos
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS sintomas_dominio (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT UNIQUE NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS localizacoes_dominio (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                sigla TEXT UNIQUE NOT NULL
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS dados_clinicos (
+                id_paciente TEXT PRIMARY KEY,
+                tempo_inicio_sintomas_anos INTEGER,
+                resposta_motora TEXT CHECK (resposta_motora IN ('nenhuma melhora', 'pouca melhora', 'melhora parcial', 'melhora total')),
+                tolerancia_levodopa TEXT CHECK (tolerancia_levodopa IN ('sem problemas', 'teve dificuldade', 'intolerancia')),
+                uso_regular_cafe INTEGER DEFAULT 0,
+                frequencia_por_dia INTEGER DEFAULT 0,
+                cirurgia_dp INTEGER DEFAULT 0,
+                abuso_substancia INTEGER DEFAULT 0,
+                qual_substancia TEXT,
+                ancestrais TEXT,
+                familiar_com_dp TEXT CHECK (familiar_com_dp IN ('sim', 'não', 'não sabe')) DEFAULT 'não',
+                qual_familiar_dp TEXT,
+                familiar_com_tremor TEXT CHECK (familiar_com_tremor IN ('sim', 'não', 'não sabe')) DEFAULT 'não',
+                qual_familiar_tremor TEXT,
+                criado_em TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (id_paciente) REFERENCES pacientes (id) ON DELETE CASCADE
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS dados_clinicos_sintomas (
+                id_paciente TEXT,
+                id_sintoma INTEGER,
+                PRIMARY KEY (id_paciente, id_sintoma),
+                FOREIGN KEY (id_paciente) REFERENCES dados_clinicos (id_paciente) ON DELETE CASCADE,
+                FOREIGN KEY (id_sintoma) REFERENCES sintomas_dominio (id) ON DELETE CASCADE
+            )
+        ''')
+
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS dados_clinicos_localizacoes (
+                id_paciente TEXT,
+                id_localizacao INTEGER,
+                PRIMARY KEY (id_paciente, id_localizacao),
+                FOREIGN KEY (id_paciente) REFERENCES dados_clinicos (id_paciente) ON DELETE CASCADE,
+                FOREIGN KEY (id_localizacao) REFERENCES localizacoes_dominio (id) ON DELETE CASCADE
+            )
+        ''')
+
+        # Seed sintomas de domínio se vazio
+        cursor.execute("SELECT COUNT(*) FROM sintomas_dominio")
+        if cursor.fetchone()[0] == 0:
+            for s in ['bradicinesia', 'rigidez', 'tremor', 'instabilidade postural', 'fraqueza muscular', 'formigamento', 'outros']:
+                cursor.execute("INSERT INTO sintomas_dominio (nome) VALUES (?)", (s,))
+
+        # Seed localizacoes de domínio se vazio
+        cursor.execute("SELECT COUNT(*) FROM localizacoes_dominio")
+        if cursor.fetchone()[0] == 0:
+            for loc in ['MSD', 'MIE', 'MSE', 'MS', 'MI', 'MID', 'QUEIXO', 'CABEÇA', 'OUTRO']:
+                cursor.execute("INSERT INTO localizacoes_dominio (sigla) VALUES (?)", (loc,))
             
         # Seed usuários se vazio
         cursor.execute("SELECT COUNT(*) FROM usuarios")
