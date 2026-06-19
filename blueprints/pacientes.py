@@ -1,27 +1,40 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, abort
 from flask_login import login_required
 from services import patient_service
+from services.exceptions import ValidationError, ResourceNotFoundError
 
 pacientes_bp = Blueprint('pacientes', __name__)
 
 @pacientes_bp.route('/pacientes', methods=['GET', 'POST'])
 @login_required
 def pacientes():
+    error_occurred = False
     if request.method == 'POST':
         nome_completo = request.form.get('nome_completo')
         data_nasc_str = request.form.get('data_nascimento')
         sexo = request.form.get('sexo')
         tipo = request.form.get('tipo')
         
-        success, message = patient_service.create_patient(nome_completo, data_nasc_str, sexo, tipo)
-        if success:
-            flash(message, 'success')
+        try:
+            patient_service.create_patient(nome_completo, data_nasc_str, sexo, tipo)
+            flash("Paciente cadastrado com sucesso.", 'success')
             return redirect(url_for('pacientes.pacientes'))
-        else:
-            flash(message, 'danger')
+        except ValidationError as e:
+            flash(str(e), 'danger')
+            error_occurred = True
+        except Exception as e:
+            print(f"Erro inesperado ao criar paciente: {e}")
+            flash("Erro interno do servidor ao cadastrar paciente.", 'danger')
+            error_occurred = True
             
-    lista_pacientes = patient_service.list_patients()
-    return render_template('pacientes.html', pacientes=lista_pacientes)
+    try:
+        lista_pacientes = patient_service.list_patients()
+        status_code = 400 if error_occurred else 200
+        return render_template('pacientes.html', pacientes=lista_pacientes), status_code
+    except Exception as e:
+        print(f"Erro ao listar pacientes: {e}")
+        flash("Erro ao obter a lista de pacientes.", 'danger')
+        return render_template('pacientes.html', pacientes=[]), 500
 
 
 @pacientes_bp.route('/pacientes/<string:paciente_id>/editar', methods=['POST'])
@@ -32,29 +45,37 @@ def editar_paciente(paciente_id):
     sexo = request.form.get('sexo')
     tipo = request.form.get('tipo')
     
-    success, message = patient_service.update_patient(paciente_id, nome_completo, data_nasc_str, sexo, tipo)
-    if success:
-        flash(message, 'success')
-    else:
-        flash(message, 'danger')
+    try:
+        patient_service.update_patient(paciente_id, nome_completo, data_nasc_str, sexo, tipo)
+        flash("Dados do paciente atualizados com sucesso.", 'success')
+    except ValidationError as e:
+        flash(str(e), 'danger')
+    except Exception as e:
+        print(f"Erro inesperado ao editar paciente {paciente_id}: {e}")
+        flash("Erro interno do servidor ao atualizar dados do paciente.", 'danger')
     return redirect(url_for('pacientes.pacientes'))
 
 
 @pacientes_bp.route('/pacientes/<string:paciente_id>')
 @login_required
 def detalhes_paciente(paciente_id):
-    details = patient_service.get_patient_details(paciente_id)
-    if not details:
+    try:
+        details = patient_service.get_patient_details(paciente_id)
+        return render_template('detalhes_paciente.html', 
+                               paciente=details['paciente'], 
+                               idade=details['idade'], 
+                               vinculos=details['vinculos'], 
+                               grupos_disponiveis=details['grupos_disponiveis'],
+                               data_hoje=details['data_hoje'],
+                               exames=details['exames'],
+                               dados_clinicos=details.get('dados_clinicos'),
+                               dados_complementares=details.get('dados_complementares'),
+                               dados_complementares_formatted_phone=details.get('dados_complementares_formatted_phone')), 200
+    except ResourceNotFoundError:
         abort(404)
-        
-    return render_template('detalhes_paciente.html', 
-                           paciente=details['paciente'], 
-                           idade=details['idade'], 
-                           vinculos=details['vinculos'], 
-                           grupos_disponiveis=details['grupos_disponiveis'],
-                           data_hoje=details['data_hoje'],
-                           exames=details['exames'],
-                           dados_clinicos=details.get('dados_clinicos'))
+    except Exception as e:
+        print(f"Erro ao obter detalhes do paciente {paciente_id}: {e}")
+        abort(500)
 
 
 @pacientes_bp.route('/pacientes/<string:paciente_id>/vincular', methods=['POST'])
@@ -63,11 +84,14 @@ def vincular_grupo(paciente_id):
     id_grupo = request.form.get('id_grupo')
     data_ini_str = request.form.get('data_inicio')
     
-    success, message = patient_service.vincular_grupo(paciente_id, id_grupo, data_ini_str)
-    if success:
-        flash(message, 'success')
-    else:
-        flash(message, 'danger')
+    try:
+        patient_service.vincular_grupo(paciente_id, id_grupo, data_ini_str)
+        flash("Paciente vinculado ao grupo com sucesso.", 'success')
+    except ValidationError as e:
+        flash(str(e), 'danger')
+    except Exception as e:
+        print(f"Erro ao vincular grupo para paciente {paciente_id}: {e}")
+        flash("Erro interno do servidor ao vincular paciente ao grupo.", 'danger')
         
     return redirect(url_for('pacientes.detalhes_paciente', paciente_id=paciente_id))
 
@@ -76,12 +100,16 @@ def vincular_grupo(paciente_id):
 @login_required
 def desligar_grupo(vinculo_id):
     data_fim_str = request.form.get('data_fim')
-    success, message, paciente_id = patient_service.desligar_grupo(vinculo_id, data_fim_str)
-    
-    if success:
-        flash(message, 'success')
-    else:
-        flash(message, 'danger')
+    paciente_id = None
+    try:
+        paciente_id = patient_service.desligar_grupo(vinculo_id, data_fim_str)
+        flash("Paciente desligado do grupo com sucesso.", 'success')
+    except ValidationError as e:
+        flash(str(e), 'danger')
+        paciente_id = e.context_id
+    except Exception as e:
+        print(f"Erro ao desligar vínculo {vinculo_id}: {e}")
+        flash("Erro interno do servidor ao desligar paciente do grupo.", 'danger')
         
     if paciente_id:
         return redirect(url_for('pacientes.detalhes_paciente', paciente_id=paciente_id))

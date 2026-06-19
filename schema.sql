@@ -180,3 +180,17 @@ CREATE TABLE dados_clinicos_localizacoes (
 -- Índices adicionais para otimização
 CREATE INDEX idx_dados_clinicos_sintomas ON dados_clinicos_sintomas (id_paciente);
 CREATE INDEX idx_dados_clinicos_localizacoes ON dados_clinicos_localizacoes (id_paciente);
+
+-- Tabela Principal de Dados Complementares
+CREATE TABLE dados_complementares (
+    id_paciente UUID PRIMARY KEY REFERENCES pacientes(id) ON DELETE CASCADE,
+    telefone VARCHAR(11) NOT NULL,
+    dominio_manual VARCHAR(20) CHECK (dominio_manual IN ('destro(a)', 'sinistro(a)')) NOT NULL,
+    cor VARCHAR(20) CHECK (cor IN ('pardo(a)', 'branco(a)', 'negro(a)', 'amarelo(a)')) NOT NULL,
+    estado_civil VARCHAR(20) CHECK (estado_civil IN ('solteiro(a)', 'casado(a)', 'separado(a)', 'viuvo(a)', 'divorciado(a)')) NOT NULL,
+    escolaridade VARCHAR(50) CHECK (escolaridade IN ('fundamental incompleto', 'fundamental completo', 'medio incompleto', 'medio completo', 'superior incompleto', 'superior completo', 'pós graduação')) NOT NULL,
+    atividade_profissional VARCHAR(50) CHECK (atividade_profissional IN ('aposentado(a)', 'desempregado(a)', 'trabalhador(a) ativo(a)', 'auxilio doença', 'beneficiario(a)', 'amparo social')) NOT NULL,
+    criado_em TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_dados_complementares_paciente ON dados_complementares (id_paciente);

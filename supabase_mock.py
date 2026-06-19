@@ -123,6 +123,20 @@ class SupabaseMockClient:
             )
         ''')
 
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS dados_complementares (
+                id_paciente TEXT PRIMARY KEY,
+                telefone TEXT NOT NULL,
+                dominio_manual TEXT CHECK (dominio_manual IN ('destro(a)', 'sinistro(a)')) NOT NULL,
+                cor TEXT CHECK (cor IN ('pardo(a)', 'branco(a)', 'negro(a)', 'amarelo(a)')) NOT NULL,
+                estado_civil TEXT CHECK (estado_civil IN ('solteiro(a)', 'casado(a)', 'separado(a)', 'viuvo(a)', 'divorciado(a)')) NOT NULL,
+                escolaridade TEXT CHECK (escolaridade IN ('fundamental incompleto', 'fundamental completo', 'medio incompleto', 'medio completo', 'superior incompleto', 'superior completo', 'pós graduação')) NOT NULL,
+                atividade_profissional TEXT CHECK (atividade_profissional IN ('aposentado(a)', 'desempregado(a)', 'trabalhador(a) ativo(a)', 'auxilio doença', 'beneficiario(a)', 'amparo social')) NOT NULL,
+                criado_em TEXT DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (id_paciente) REFERENCES pacientes (id) ON DELETE CASCADE
+            )
+        ''')
+
         # Seed sintomas de domínio se vazio
         cursor.execute("SELECT COUNT(*) FROM sintomas_dominio")
         if cursor.fetchone()[0] == 0:

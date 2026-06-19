@@ -1,78 +1,71 @@
 from models import clinical_data_repo
+from services.exceptions import ValidationError
 
 def validate_and_sanitize_clinical_data(form_data):
-    # Validação de enums / seleções simples
     resposta_motora = form_data.get('resposta_motora')
     if resposta_motora and resposta_motora not in ['nenhuma melhora', 'pouca melhora', 'melhora parcial', 'melhora total']:
-        return None, "Resposta motora inválida selecionada."
+        raise ValidationError("Resposta motora inválida selecionada.")
         
     tolerancia_levodopa = form_data.get('tolerancia_levodopa')
     if tolerancia_levodopa and tolerancia_levodopa not in ['sem problemas', 'teve dificuldade', 'intolerancia']:
-        return None, "Tolerância à levodopa inválida selecionada."
+        raise ValidationError("Tolerância à levodopa inválida selecionada.")
         
     familiar_com_dp = form_data.get('familiar_com_dp', 'não')
     if familiar_com_dp not in ['sim', 'não', 'não sabe']:
-        return None, "Histórico familiar de Parkinson inválido."
+        raise ValidationError("Histórico familiar de Parkinson inválido.")
         
     familiar_com_tremor = form_data.get('familiar_com_tremor', 'não')
     if familiar_com_tremor not in ['sim', 'não', 'não sabe']:
-        return None, "Histórico familiar de tremor inválido."
+        raise ValidationError("Histórico familiar de tremor inválido.")
 
-    # Tempo de início de sintomas
     tempo_sintomas = form_data.get('tempo_inicio_sintomas_anos')
     if tempo_sintomas and str(tempo_sintomas).strip() != '':
         try:
             tempo_sintomas = int(tempo_sintomas)
             if tempo_sintomas < 0:
-                return None, "O tempo de início de sintomas deve ser um valor inteiro maior ou igual a 0."
-        except ValueError:
-            return None, "O tempo de início de sintomas deve ser um valor inteiro válido."
+                raise ValidationError("O tempo de início de sintomas deve ser um valor inteiro maior ou igual a 0.")
+        except ValueError as e:
+            raise ValidationError("O tempo de início de sintomas deve ser um valor inteiro válido.") from e
     else:
         tempo_sintomas = None
 
-    # Validação lógica do Café
     uso_cafe = str(form_data.get('uso_regular_cafe', '')).lower() in ['true', 'on', '1', 'y', 'yes', 'checked']
     frequencia = form_data.get('frequencia_por_dia')
     if uso_cafe:
         if not frequencia or str(frequencia).strip() == '':
-            return None, "A frequência por dia de café é obrigatória se o uso de café for ativo."
+            raise ValidationError("A frequência por dia de café é obrigatória se o uso de café for ativo.")
         try:
             frequencia = int(frequencia)
             if frequencia <= 0:
-                return None, "A frequência por dia de café deve ser um número inteiro positivo."
-        except ValueError:
-            return None, "A frequência por dia de café deve ser um número inteiro válido."
+                raise ValidationError("A frequência por dia de café deve ser um número inteiro positivo.")
+        except ValueError as e:
+            raise ValidationError("A frequência por dia de café deve ser um número inteiro válido.") from e
     else:
         frequencia = 0
 
-    # Cirurgia DP
     cirurgia_dp = str(form_data.get('cirurgia_dp', '')).lower() in ['true', 'on', '1', 'y', 'yes', 'checked']
 
-    # Validação do Abuso de Substâncias
     abuso_substancia = str(form_data.get('abuso_substancia', '')).lower() in ['true', 'on', '1', 'y', 'yes', 'checked']
     qual_substancia = form_data.get('qual_substancia', '').strip()
     if abuso_substancia:
         if not qual_substancia:
-            return None, "A especificação da substância é obrigatória se houver abuso de substâncias."
+            raise ValidationError("A especificação da substância é obrigatória se houver abuso de substâncias.")
     else:
         qual_substancia = None
 
-    # Ancestrais
     ancestrais = form_data.get('ancestrais', '').strip() or None
 
-    # Especificação de familiar com DP
     qual_familiar_dp = form_data.get('qual_familiar_dp', '').strip()
     if familiar_com_dp == 'sim':
         if not qual_familiar_dp:
-            return None, "A especificação do familiar é obrigatória se houver familiar com Parkinson."
+            raise ValidationError("A especificação do familiar é obrigatória se houver familiar com Parkinson.")
     else:
         qual_familiar_dp = None
 
-    # Especificação de familiar com Tremor
     qual_familiar_tremor = form_data.get('qual_familiar_tremor', '').strip()
     if familiar_com_tremor == 'sim':
         if not qual_familiar_tremor:
-            return None, "A especificação do familiar é obrigatória se houver familiar com tremor."
+            raise ValidationError("A especificação do familiar é obrigatória se houver familiar com tremor.")
     else:
         qual_familiar_tremor = None
 
@@ -92,7 +85,7 @@ def validate_and_sanitize_clinical_data(form_data):
         'qual_familiar_tremor': qual_familiar_tremor
     }
     
-    return sanitized_data, None
+    return sanitized_data
 
 
 def get_clinical_data(paciente_id):
@@ -108,14 +101,5 @@ def get_clinical_data(paciente_id):
 
 
 def save_clinical_data(paciente_id, form_data, sintomas_ids, localizacoes_ids):
-    # 1. Validar e sanitizar
-    sanitized_data, error_msg = validate_and_sanitize_clinical_data(form_data)
-    if error_msg:
-        return False, error_msg
-        
-    # 2. Persistir no banco
-    try:
-        clinical_data_repo.save_dados_clinicos(paciente_id, sanitized_data, sintomas_ids, localizacoes_ids)
-        return True, "Ficha de Dados Clínicos salva com sucesso!"
-    except Exception as e:
-        return False, f"Erro ao salvar dados clínicos: {str(e)}"
+    sanitized_data = validate_and_sanitize_clinical_data(form_data)
+    clinical_data_repo.save_dados_clinicos(paciente_id, sanitized_data, sintomas_ids, localizacoes_ids)

@@ -1,5 +1,6 @@
 from werkzeug.security import generate_password_hash
 from models import user_repo
+from services.exceptions import ValidationError
 
 def authenticate_user(username, password):
     user = user_repo.get_user_by_username(username)
@@ -17,15 +18,14 @@ def authenticate_user(username, password):
 
 def create_user(username, password, role):
     if not username or not password or role not in ['usuario', 'admin']:
-        return False, "Dados inválidos."
+        raise ValidationError("Dados de cadastro inválidos.")
         
     existing = user_repo.get_user_by_username(username)
     if existing:
-        return False, "Este nome de usuário já está cadastrado."
+        raise ValidationError("Este nome de usuário já está cadastrado.")
         
     pw_hash = generate_password_hash(password)
-    user_repo.create_user(username, pw_hash, role)
-    return True, f"Usuário {username} cadastrado com sucesso."
+    return user_repo.create_user(username, pw_hash, role)
 
 
 def list_users():
@@ -34,6 +34,17 @@ def list_users():
 
 def delete_user(user_id, current_user_id):
     if int(user_id) == int(current_user_id):
-        return False, "Você não pode deletar sua própria conta ativa."
+        raise ValidationError("Você não pode deletar sua própria conta ativa.")
     user_repo.delete_user(user_id)
-    return True, "Usuário removido com sucesso."
+
+
+def load_user(user_id):
+    u = user_repo.get_user_by_id(user_id)
+    if u:
+        return user_repo.Usuario(
+            id=u['id'], 
+            username=u['username'], 
+            password_hash=u['password_hash'], 
+            role=u['role']
+        )
+    return None

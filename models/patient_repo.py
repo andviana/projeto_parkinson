@@ -30,3 +30,8 @@ def update_patient(paciente_id, nome_completo, data_nascimento, sexo, tipo):
     }
     res = supabase.table('pacientes').update(data).eq('id', paciente_id).execute()
     return res.data[0] if res.data else None
+
+
+def get_all_patients_types():
+    res = supabase.table('pacientes').select('id, tipo').execute()
+    return res.data

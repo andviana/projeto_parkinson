@@ -44,3 +44,7 @@ def create_user(username, password_hash, role):
 
 def delete_user(user_id):
     supabase.table('usuarios').delete().eq('id', user_id).execute()
+
+
+def check_db_connection():
+    supabase.table('usuarios').select('id').limit(1).execute()

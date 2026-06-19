@@ -1,5 +1,5 @@
-import datetime
 from db import supabase
+from models import user_repo, patient_repo
 from services import group_service
 
 def get_dashboard_data():
@@ -8,20 +8,17 @@ def get_dashboard_data():
     db_type = "Local SQLite (Modo de Teste)" if is_mock else "Supabase Cloud (PostgreSQL)"
     
     try:
-        # Validar integridade da conexão
-        supabase.table('usuarios').select('id').limit(1).execute()
+        user_repo.check_db_connection()
     except Exception as e:
         db_status = f"Erro de Conexão: {str(e)}"
         
     try:
-        # Buscar estatísticas de pacientes
-        res_pacientes = supabase.table('pacientes').select('id, tipo').execute().data
+        res_pacientes = patient_repo.get_all_patients_types()
         total_pacientes = len(res_pacientes)
         total_hc = sum(1 for p in res_pacientes if p['tipo'] == 'HC')
         total_pr = sum(1 for p in res_pacientes if p['tipo'] == 'PR')
         total_pd = sum(1 for p in res_pacientes if p['tipo'] == 'PD')
         
-        # Buscar listagem de grupos
         lista_grupos = group_service.list_groups_with_counts()
     except Exception as e:
         print(f"Erro ao carregar estatísticas no dashboard: {e}")
