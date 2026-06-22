@@ -1,6 +1,15 @@
+import os
+import logging
 from flask import Flask, render_template
 from flask_login import LoginManager
 from config import Config
+
+# Configuração básica de logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s in %(module)s: %(message)s'
+)
+logger = logging.getLogger(__name__)
 
 # Inicialização global do Login Manager
 login_manager = LoginManager()
@@ -14,7 +23,7 @@ def load_user(user_id):
         from services import auth_service
         return auth_service.load_user(user_id)
     except Exception as e:
-        print(f"Erro ao carregar usuário no factory: {e}")
+        logger.error(f"Erro ao carregar usuário no factory: {e}")
     return None
 
 
@@ -50,4 +59,6 @@ def create_app():
 
 if __name__ == '__main__':
     app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    debug_mode = os.environ.get('FLASK_DEBUG', 'False').lower() in ['true', '1', 't']
+    app.run(debug=debug_mode, host='0.0.0.0', port=5000)
+

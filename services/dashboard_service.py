@@ -1,6 +1,9 @@
+import logging
 from db import supabase
 from models import user_repo, patient_repo
 from services import group_service
+
+logger = logging.getLogger(__name__)
 
 def get_dashboard_data():
     db_status = "Conectado com Sucesso"
@@ -21,7 +24,7 @@ def get_dashboard_data():
         
         lista_grupos = group_service.list_groups_with_counts()
     except Exception as e:
-        print(f"Erro ao carregar estatísticas no dashboard: {e}")
+        logger.error(f"Erro ao carregar estatísticas no dashboard: {e}")
         total_pacientes = total_hc = total_pr = total_pd = 0
         lista_grupos = []
         
@@ -34,3 +37,4 @@ def get_dashboard_data():
         'total_pd': total_pd,
         'grupos': lista_grupos
     }
+

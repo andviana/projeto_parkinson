@@ -1,14 +1,17 @@
+import logging
 from flask import Blueprint, render_template, redirect, url_for, request, flash, abort
 from flask_login import login_required
 from services import group_service
 from services.exceptions import ValidationError, ResourceNotFoundError
+
+logger = logging.getLogger(__name__)
 
 grupos_bp = Blueprint('grupos', __name__)
 
 @grupos_bp.route('/grupos', methods=['GET', 'POST'])
 @login_required
 def grupos():
-    error_occurred = False
+    status_code = 200
     if request.method == 'POST':
         nome = request.form.get('nome')
         try:
@@ -17,18 +20,17 @@ def grupos():
             return redirect(url_for('grupos.grupos'))
         except ValidationError as e:
             flash(str(e), 'danger')
-            error_occurred = True
+            status_code = 400
         except Exception as e:
-            print(f"Erro inesperado ao criar grupo: {e}")
+            logger.error(f"Erro inesperado ao criar grupo: {e}")
             flash("Erro interno do servidor ao criar grupo.", 'danger')
-            error_occurred = True
+            status_code = 500
             
     try:
         lista_grupos = group_service.list_groups_with_counts()
-        status_code = 400 if error_occurred else 200
         return render_template('grupos.html', grupos=lista_grupos), status_code
     except Exception as e:
-        print(f"Erro ao listar grupos: {e}")
+        logger.error(f"Erro ao listar grupos: {e}")
         flash("Erro ao obter a lista de grupos.", 'danger')
         return render_template('grupos.html', grupos=[]), 500
 
@@ -40,12 +42,25 @@ def editar_grupo(grupo_id):
     try:
         group_service.update_group_name(grupo_id, novo_nome)
         flash("Nome do grupo atualizado com sucesso.", 'success')
+        return redirect(url_for('grupos.grupos'))
     except ValidationError as e:
         flash(str(e), 'danger')
+        status_code = 400
+    except ResourceNotFoundError as e:
+        flash(str(e), 'danger')
+        status_code = 404
     except Exception as e:
-        print(f"Erro ao editar grupo {grupo_id}: {e}")
+        logger.error(f"Erro ao editar grupo {grupo_id}: {e}")
         flash("Erro interno do servidor ao editar grupo.", 'danger')
-    return redirect(url_for('grupos.grupos'))
+        status_code = 500
+
+    try:
+        lista_grupos = group_service.list_groups_with_counts()
+        return render_template('grupos.html', grupos=lista_grupos), status_code
+    except Exception as e:
+        logger.error(f"Erro ao listar grupos: {e}")
+        flash("Erro ao obter a lista de grupos.", 'danger')
+        return render_template('grupos.html', grupos=[]), 500
 
 
 @grupos_bp.route('/grupos/<int:grupo_id>')
@@ -57,5 +72,7 @@ def detalhes_grupo(grupo_id):
     except ResourceNotFoundError:
         abort(404)
     except Exception as e:
-        print(f"Erro ao carregar detalhes do grupo {grupo_id}: {e}")
+        logger.error(f"Erro ao carregar detalhes do grupo {grupo_id}: {e}")
         abort(500)
+
+
