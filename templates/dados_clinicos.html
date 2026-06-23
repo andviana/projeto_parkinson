@@ -12,25 +12,8 @@
             <i class="bi bi-arrow-left me-1"></i> Voltar para Prontuário
         </a>
 
-        <!-- Header do Paciente -->
-        <div class="card-custom mb-4 bg-light border-0">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <span class="text-muted small">Prontuário de</span>
-                    <h4 class="fw-bold text-dark-blue mb-1">{{ paciente.nome_completo }}</h4>
-                    <span class="text-muted small">UUID: {{ paciente.id }}</span>
-                </div>
-                <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                    {% if paciente.tipo == 'PD' %}
-                    <span class="badge badge-tipo badge-pd fs-6">PD (Parkinson)</span>
-                    {% elif paciente.tipo == 'HC' %}
-                    <span class="badge badge-tipo badge-hc fs-6">HC (Controle)</span>
-                    {% else %}
-                    <span class="badge badge-tipo badge-pr fs-6">PR (Prodromal)</span>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
+        <!-- Header do Paciente (Compartilhado) -->
+        {% include 'includes/patient_header_card.html' %}
 
         <!-- Formulário -->
         <form action="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" method="POST">
@@ -46,7 +29,7 @@
                     <div class="col-md-6">
                         <label for="tempo_inicio_sintomas_anos" class="form-label fw-semibold text-dark-blue">Tempo desde o Início dos Sintomas (anos)</label>
                         <input type="number" class="form-control" id="tempo_inicio_sintomas_anos" name="tempo_inicio_sintomas_anos" min="0" placeholder="Ex: 3"
-                               value="{{ dados_clinicos.tempo_inicio_sintomas_anos if dados_clinicos and dados_clinicos.tempo_inicio_sintomas_anos is not none else '' }}" style="border-color: var(--grey-border);">
+                               value="{{ dados_clinicos.tempo_inicio_sintomas_anos if dados_clinicos and dados_clinicos.tempo_inicio_sintomas_anos is not none else '' }}">
                     </div>
                 </div>
 
@@ -95,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="resposta_motora" class="form-label fw-semibold text-dark-blue">Resposta Motora à Levodopa</label>
-                        <select class="form-select" id="resposta_motora" name="resposta_motora" style="border-color: var(--grey-border);">
+                        <select class="form-select" id="resposta_motora" name="resposta_motora">
                             <option value="" {% if not dados_clinicos or not dados_clinicos.resposta_motora %}selected{% endif %}>Não se aplica / Sem resposta</option>
                             <option value="nenhuma melhora" {% if dados_clinicos and dados_clinicos.resposta_motora == 'nenhuma melhora' %}selected{% endif %}>Nenhuma melhora</option>
                             <option value="pouca melhora" {% if dados_clinicos and dados_clinicos.resposta_motora == 'pouca melhora' %}selected{% endif %}>Pouca melhora</option>
@@ -106,7 +89,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="tolerancia_levodopa" class="form-label fw-semibold text-dark-blue">Tolerância à Levodopa</label>
-                        <select class="form-select" id="tolerancia_levodopa" name="tolerancia_levodopa" style="border-color: var(--grey-border);">
+                        <select class="form-select" id="tolerancia_levodopa" name="tolerancia_levodopa">
                             <option value="" {% if not dados_clinicos or not dados_clinicos.tolerancia_levodopa %}selected{% endif %}>Não se aplica / Sem registro</option>
                             <option value="sem problemas" {% if dados_clinicos and dados_clinicos.tolerancia_levodopa == 'sem problemas' %}selected{% endif %}>Sem problemas</option>
                             <option value="teve dificuldade" {% if dados_clinicos and dados_clinicos.tolerancia_levodopa == 'teve dificuldade' %}selected{% endif %}>Teve dificuldade</option>
@@ -115,27 +98,27 @@
                     </div>
                 </div>
 
-                <hr class="my-4" style="color: var(--grey-border);">
+                <hr class="my-4 divider-grey">
 
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="form-check form-switch p-0 ps-5 mb-3">
-                            <input class="form-check-input ms-n5" type="checkbox" role="switch" id="uso_regular_cafe" name="uso_regular_cafe" value="true"
-                                   {% if dados_clinicos and dados_clinicos.uso_regular_cafe %}checked{% endif %} style="width: 2.5em; height: 1.25em;">
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="uso_regular_cafe" name="uso_regular_cafe" value="true"
+                                   {% if dados_clinicos and dados_clinicos.uso_regular_cafe %}checked{% endif %}>
                             <label class="form-check-label fw-semibold text-dark-blue ps-2" for="uso_regular_cafe">Consome Café Regularmente</label>
                         </div>
                         
-                        <div class="mb-3" id="div_frequencia_cafe" style="display: none;">
+                        <div class="mb-3 d-none" id="div_frequencia_cafe">
                             <label for="frequencia_por_dia" class="form-label fw-semibold text-dark-blue">Frequência por Dia (Xícaras)</label>
                             <input type="number" class="form-control" id="frequencia_por_dia" name="frequencia_por_dia" min="1" placeholder="Ex: 3"
-                                   value="{{ dados_clinicos.frequencia_por_dia if dados_clinicos and dados_clinicos.frequencia_por_dia is not none else '' }}" style="border-color: var(--grey-border);">
+                                   value="{{ dados_clinicos.frequencia_por_dia if dados_clinicos and dados_clinicos.frequencia_por_dia is not none else '' }}">
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-4">
                         <div class="form-check form-switch p-0 ps-5">
-                            <input class="form-check-input ms-n5" type="checkbox" role="switch" id="cirurgia_dp" name="cirurgia_dp" value="true"
-                                   {% if dados_clinicos and dados_clinicos.cirurgia_dp %}checked{% endif %} style="width: 2.5em; height: 1.25em;">
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="cirurgia_dp" name="cirurgia_dp" value="true"
+                                   {% if dados_clinicos and dados_clinicos.cirurgia_dp %}checked{% endif %}>
                             <label class="form-check-label fw-semibold text-dark-blue ps-2" for="cirurgia_dp">Já realizou Cirurgia de Estimulação Cerebral (DBS / DP)</label>
                         </div>
                     </div>
@@ -152,57 +135,57 @@
                 <div class="row mb-4">
                     <div class="col-md-6 mb-3">
                         <div class="form-check form-switch p-0 ps-5 mb-3">
-                            <input class="form-check-input ms-n5" type="checkbox" role="switch" id="abuso_substancia" name="abuso_substancia" value="true"
-                                   {% if dados_clinicos and dados_clinicos.abuso_substancia %}checked{% endif %} style="width: 2.5em; height: 1.25em;">
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="abuso_substancia" name="abuso_substancia" value="true"
+                                   {% if dados_clinicos and dados_clinicos.abuso_substancia %}checked{% endif %}>
                             <label class="form-check-label fw-semibold text-dark-blue ps-2" for="abuso_substancia">Histórico de Abuso de Substâncias</label>
                         </div>
                         
-                        <div class="mb-3" id="div_qual_substancia" style="display: none;">
+                        <div class="mb-3 d-none" id="div_qual_substancia">
                             <label for="qual_substancia" class="form-label fw-semibold text-dark-blue">Especifique a Substância</label>
                             <input type="text" class="form-control" id="qual_substancia" name="qual_substancia" placeholder="Ex: Álcool, Tabaco, Solventes..."
-                                   value="{{ dados_clinicos.qual_substancia if dados_clinicos and dados_clinicos.qual_substancia else '' }}" style="border-color: var(--grey-border);">
+                                   value="{{ dados_clinicos.qual_substancia if dados_clinicos and dados_clinicos.qual_substancia else '' }}">
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="ancestrais" class="form-label fw-semibold text-dark-blue">Origem de Ancestrais / Etnia</label>
                         <input type="text" class="form-control" id="ancestrais" name="ancestrais" placeholder="Ex: Italiana, Espanhola, Indígena..."
-                               value="{{ dados_clinicos.ancestrais if dados_clinicos and dados_clinicos.ancestrais else '' }}" style="border-color: var(--grey-border);">
+                               value="{{ dados_clinicos.ancestrais if dados_clinicos and dados_clinicos.ancestrais else '' }}">
                     </div>
                 </div>
 
-                <hr class="my-4" style="color: var(--grey-border);">
+                <hr class="my-4 divider-grey">
 
                 <div class="row">
                     <!-- Familiar DP -->
                     <div class="col-md-6 mb-3">
                         <label for="familiar_com_dp" class="form-label fw-semibold text-dark-blue">Algum familiar possui Doença de Parkinson?</label>
-                        <select class="form-select" id="familiar_com_dp" name="familiar_com_dp" style="border-color: var(--grey-border);">
+                        <select class="form-select" id="familiar_com_dp" name="familiar_com_dp">
                             <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'não' %}selected{% endif %}>Não</option>
                             <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'sim' %}selected{% endif %}>Sim</option>
                             <option value="não sabe" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'não sabe' %}selected{% endif %}>Não sabe</option>
                         </select>
                         
-                        <div class="mt-3" id="div_qual_familiar_dp" style="display: none;">
+                        <div class="mt-3 d-none" id="div_qual_familiar_dp">
                             <label for="qual_familiar_dp" class="form-label fw-semibold text-dark-blue">Qual familiar? (Grau de parentesco)</label>
                             <input type="text" class="form-control" id="qual_familiar_dp" name="qual_familiar_dp" placeholder="Ex: Pai, Tio Materno..."
-                                   value="{{ dados_clinicos.qual_familiar_dp if dados_clinicos and dados_clinicos.qual_familiar_dp else '' }}" style="border-color: var(--grey-border);">
+                                   value="{{ dados_clinicos.qual_familiar_dp if dados_clinicos and dados_clinicos.qual_familiar_dp else '' }}">
                         </div>
                     </div>
 
                     <!-- Familiar Tremor -->
                     <div class="col-md-6 mb-3">
                         <label for="familiar_com_tremor" class="form-label fw-semibold text-dark-blue">Algum familiar possui tremor essencial/outros?</label>
-                        <select class="form-select" id="familiar_com_tremor" name="familiar_com_tremor" style="border-color: var(--grey-border);">
+                        <select class="form-select" id="familiar_com_tremor" name="familiar_com_tremor">
                             <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'não' %}selected{% endif %}>Não</option>
                             <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'sim' %}selected{% endif %}>Sim</option>
                             <option value="não sabe" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'não sabe' %}selected{% endif %}>Não sabe</option>
                         </select>
                         
-                        <div class="mt-3" id="div_qual_familiar_tremor" style="display: none;">
+                        <div class="mt-3 d-none" id="div_qual_familiar_tremor">
                             <label for="qual_familiar_tremor" class="form-label fw-semibold text-dark-blue">Qual familiar? (Grau de parentesco)</label>
                             <input type="text" class="form-control" id="qual_familiar_tremor" name="qual_familiar_tremor" placeholder="Ex: Avó Paterna, Mãe..."
-                                   value="{{ dados_clinicos.qual_familiar_tremor if dados_clinicos and dados_clinicos.qual_familiar_tremor else '' }}" style="border-color: var(--grey-border);">
+                                   value="{{ dados_clinicos.qual_familiar_tremor if dados_clinicos and dados_clinicos.qual_familiar_tremor else '' }}">
                         </div>
                     </div>
                 </div>
@@ -219,79 +202,6 @@
     </div>
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Validação dinâmica de Café
-        const usoCafe = document.getElementById("uso_regular_cafe");
-        const divCafe = document.getElementById("div_frequencia_cafe");
-        const inputCafe = document.getElementById("frequencia_por_dia");
-
-        function toggleCafe() {
-            if (usoCafe.checked) {
-                divCafe.style.display = "block";
-                inputCafe.setAttribute("required", "required");
-            } else {
-                divCafe.style.display = "none";
-                inputCafe.removeAttribute("required");
-                inputCafe.value = "";
-            }
-        }
-        usoCafe.addEventListener("change", toggleCafe);
-        toggleCafe();
-
-        // Validação dinâmica de Abuso de Substância
-        const abusoSubstancia = document.getElementById("abuso_substancia");
-        const divSubstancia = document.getElementById("div_qual_substancia");
-        const inputSubstancia = document.getElementById("qual_substancia");
-
-        function toggleSubstancia() {
-            if (abusoSubstancia.checked) {
-                divSubstancia.style.display = "block";
-                inputSubstancia.setAttribute("required", "required");
-            } else {
-                divSubstancia.style.display = "none";
-                inputSubstancia.removeAttribute("required");
-                inputSubstancia.value = "";
-            }
-        }
-        abusoSubstancia.addEventListener("change", toggleSubstancia);
-        toggleSubstancia();
-
-        // Validação dinâmica de Familiar com Parkinson
-        const familiarDp = document.getElementById("familiar_com_dp");
-        const divFamiliarDp = document.getElementById("div_qual_familiar_dp");
-        const inputFamiliarDp = document.getElementById("qual_familiar_dp");
-
-        function toggleFamiliarDp() {
-            if (familiarDp.value === "sim") {
-                divFamiliarDp.style.display = "block";
-                inputFamiliarDp.setAttribute("required", "required");
-            } else {
-                divFamiliarDp.style.display = "none";
-                inputFamiliarDp.removeAttribute("required");
-                inputFamiliarDp.value = "";
-            }
-        }
-        familiarDp.addEventListener("change", toggleFamiliarDp);
-        toggleFamiliarDp();
-
-        // Validação dinâmica de Familiar com Tremor
-        const familiarTremor = document.getElementById("familiar_com_tremor");
-        const divFamiliarTremor = document.getElementById("div_qual_familiar_tremor");
-        const inputFamiliarTremor = document.getElementById("qual_familiar_tremor");
-
-        function toggleFamiliarTremor() {
-            if (familiarTremor.value === "sim") {
-                divFamiliarTremor.style.display = "block";
-                inputFamiliarTremor.setAttribute("required", "required");
-            } else {
-                divFamiliarTremor.style.display = "none";
-                inputFamiliarTremor.removeAttribute("required");
-                inputFamiliarTremor.value = "";
-            }
-        }
-        familiarTremor.addEventListener("change", toggleFamiliarTremor);
-        toggleFamiliarTremor();
-    });
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dados_clinicos.js') }}"></script>
 {% endblock %}

@@ -1,0 +1,19 @@
+<!-- Header do Paciente (Compartilhado) -->
+<div class="card-custom mb-4 bg-light border-0">
+    <div class="row align-items-center">
+        <div class="col-md-8">
+            <span class="text-muted small">Prontuário de</span>
+            <h4 class="fw-bold text-dark-blue mb-1">{{ paciente.nome_completo }}</h4>
+            <span class="text-muted small">UUID: {{ paciente.id }}</span>
+        </div>
+        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+            {% if paciente.tipo == 'PD' %}
+            <span class="badge badge-tipo badge-pd fs-6">PD (Parkinson)</span>
+            {% elif paciente.tipo == 'HC' %}
+            <span class="badge badge-tipo badge-hc fs-6">HC (Controle)</span>
+            {% else %}
+            <span class="badge badge-tipo badge-pr fs-6">PR (Prodromal)</span>
+            {% endif %}
+        </div>
+    </div>
+</div>

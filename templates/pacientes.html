@@ -32,7 +32,7 @@
                             <i class="bi bi-person-bounding-box text-muted me-2"></i>{{ p.nome_completo }}
                         </div>
                         <div>
-                            <code class="small text-muted fw-normal" style="font-size: 0.75rem;">{{ p.id }}</code>
+                            <code class="small text-muted fw-normal fs-7">{{ p.id }}</code>
                         </div>
                     </td>
                     <td>{{ p.data_nascimento.strftime('%d/%m/%Y') }}</td>
@@ -52,15 +52,15 @@
                     <td class="text-center">
                         <div class="d-inline-flex gap-1">
                             <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=p.id) }}"
-                                class="btn btn-sm btn-navy py-1 px-2.5" title="Ver Detalhes">
+                                class="btn btn-sm btn-navy py-1 px-2" title="Ver Detalhes">
                                 <i class="bi bi-eye-fill"></i> Detalhes
                             </a>
-                            <button class="btn btn-sm btn-outline-secondary py-1 px-2.5" data-bs-toggle="modal"
+                            <button class="btn btn-sm btn-outline-secondary py-1 px-2" data-bs-toggle="modal"
                                 data-bs-target="#modalEditarPaciente-{{ p.id }}" title="Editar Dados">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
                             <a href="{{ url_for('exames.cadastro_rapido_exames', paciente_id=p.id) }}"
-                                class="btn btn-sm btn-navy py-1 px-2.5" title="Lançar Exames">
+                                class="btn btn-sm btn-navy py-1 px-2" title="Lançar Exames">
                                 <i class="bi bi-file-earmark-plus-fill me-1"></i>
                             </a>
                         </div>
@@ -84,8 +84,7 @@
                                         <label for="nome_completo-{{ p.id }}"
                                             class="form-label fw-semibold text-dark-blue">Nome Completo</label>
                                         <input type="text" class="form-control" id="nome_completo-{{ p.id }}"
-                                            name="nome_completo" value="{{ p.nome_completo }}" required
-                                            style="border-color: var(--grey-border);">
+                                            name="nome_completo" value="{{ p.nome_completo }}" required>
                                     </div>
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
@@ -93,14 +92,12 @@
                                                 class="form-label fw-semibold text-dark-blue">Data de Nascimento</label>
                                             <input type="date" class="form-control" id="data_nascimento-{{ p.id }}"
                                                 name="data_nascimento"
-                                                value="{{ p.data_nascimento.strftime('%Y-%m-%d') }}" required
-                                                style="border-color: var(--grey-border);">
+                                                value="{{ p.data_nascimento.strftime('%Y-%m-%d') }}" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="sexo-{{ p.id }}"
                                                 class="form-label fw-semibold text-dark-blue">Sexo</label>
-                                            <select class="form-select" id="sexo-{{ p.id }}" name="sexo" required
-                                                style="border-color: var(--grey-border);">
+                                            <select class="form-select" id="sexo-{{ p.id }}" name="sexo" required>
                                                 <option value="M" {% if p.sexo=='M' %}selected{% endif %}>Masculino
                                                 </option>
                                                 <option value="F" {% if p.sexo=='F' %}selected{% endif %}>Feminino
@@ -112,8 +109,7 @@
                                     <div class="mb-3">
                                         <label for="tipo-{{ p.id }}" class="form-label fw-semibold text-dark-blue">Tipo
                                             de Registro Clínico</label>
-                                        <select class="form-select" id="tipo-{{ p.id }}" name="tipo" required
-                                            style="border-color: var(--grey-border);">
+                                        <select class="form-select" id="tipo-{{ p.id }}" name="tipo" required>
                                             <option value="PD" {% if p.tipo=='PD' %}selected{% endif %}>PD (Parkinson)
                                             </option>
                                             <option value="HC" {% if p.tipo=='HC' %}selected{% endif %}>HC (Controle)
@@ -159,19 +155,17 @@
                     <div class="mb-3">
                         <label for="nome_completo" class="form-label fw-semibold text-dark-blue">Nome Completo</label>
                         <input type="text" class="form-control" id="nome_completo" name="nome_completo"
-                            placeholder="Ex: Ana Maria Braga" required style="border-color: var(--grey-border);">
+                            placeholder="Ex: Ana Maria Braga" required>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="data_nascimento" class="form-label fw-semibold text-dark-blue">Data de
                                 Nascimento</label>
-                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required
-                                style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="sexo" class="form-label fw-semibold text-dark-blue">Sexo</label>
-                            <select class="form-select" id="sexo" name="sexo" required
-                                style="border-color: var(--grey-border);">
+                            <select class="form-select" id="sexo" name="sexo" required>
                                 <option value="" disabled selected>Selecione</option>
                                 <option value="M">Masculino</option>
                                 <option value="F">Feminino</option>
@@ -181,8 +175,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="tipo" class="form-label fw-semibold text-dark-blue">Tipo de Registro Clínico</label>
-                        <select class="form-select" id="tipo" name="tipo" required
-                            style="border-color: var(--grey-border);">
+                        <select class="form-select" id="tipo" name="tipo" required>
                             <option value="" disabled selected>Selecione uma classificação</option>
                             <option value="PD">PD (Paciente com Parkinson)</option>
                             <option value="HC">HC (Controle Saudável)</option>

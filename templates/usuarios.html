@@ -13,17 +13,17 @@
             <form action="{{ url_for('auth.usuarios') }}" method="POST">
                 <div class="mb-3">
                     <label for="username" class="form-label fw-semibold text-dark-blue">Nome de Usuário</label>
-                    <input type="text" class="form-control" id="username" name="username" placeholder="Ex: joao_clinico" required style="border-color: var(--grey-border);">
+                    <input type="text" class="form-control" id="username" name="username" placeholder="Ex: joao_clinico" required>
                 </div>
                 
                 <div class="mb-3">
                     <label for="password" class="form-label fw-semibold text-dark-blue">Senha de Acesso</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Defina uma senha" required style="border-color: var(--grey-border);">
+                    <input type="password" class="form-control" id="password" name="password" placeholder="Defina uma senha" required>
                 </div>
                 
                 <div class="mb-4">
                     <label for="role" class="form-label fw-semibold text-dark-blue">Nível de Acesso (Papel)</label>
-                    <select class="form-select" id="role" name="role" required style="border-color: var(--grey-border);">
+                    <select class="form-select" id="role" name="role" required>
                         <option value="" disabled selected>Selecione um papel</option>
                         <option value="usuario">Clínico (Usuário Padrão)</option>
                         <option value="admin">Administrador do Sistema</option>
@@ -70,9 +70,9 @@
                             <td class="text-muted">{{ u.criado_em[:19].replace('T', ' ') if u.criado_em else 'N/D' }}</td>
                             <td class="text-center">
                                 {% if u.id == current_user.id %}
-                                <span class="badge bg-secondary text-white py-1.5" style="font-size: 0.75rem;">Conta Ativa</span>
+                                <span class="badge bg-secondary text-white py-1 px-2 fs-7">Conta Ativa</span>
                                 {% else %}
-                                <form action="{{ url_for('auth.deletar_usuario', user_id=u.id) }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este usuário permanente?');">
+                                <form action="{{ url_for('auth.deletar_usuario', user_id=u.id) }}" method="POST" class="js-confirm-submit" data-confirm-message="Tem certeza que deseja remover este usuário permanente?">
                                     <button type="submit" class="btn btn-sm btn-outline-danger py-0 px-2" title="Excluir Usuário">
                                         <i class="bi bi-trash-fill small"></i> Deletar
                                     </button>

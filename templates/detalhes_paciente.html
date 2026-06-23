@@ -57,7 +57,7 @@
         <div class="card-custom mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold text-dark-blue mb-0">Dados Clínicos</h5>
-                <a href="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" class="btn btn-xs btn-outline-primary py-0 px-2 small" title="Editar Ficha" style="font-size: 0.75rem;">
+                <a href="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" class="btn btn-xs btn-outline-navy py-0 px-2 small fs-7" title="Editar Ficha">
                     <i class="bi bi-pencil-square small"></i> {% if dados_clinicos %}Editar{% else %}Preencher{% endif %}
                 </a>
             </div>
@@ -118,7 +118,7 @@
                 {% endif %}
             </div>
             {% else %}
-            <div class="text-center py-3 text-muted border border-dashed rounded-3" style="border-color: var(--grey-border) !important;">
+            <div class="text-center py-3 text-muted border-dashed-custom rounded-3">
                 <i class="bi bi-clipboard-pulse fs-3 mb-2 text-secondary d-block"></i>
                 <span class="small d-block mb-2">Sem ficha cadastrada</span>
                 <a href="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" class="btn btn-sm btn-navy px-3">
@@ -132,7 +132,7 @@
         <div class="card-custom mb-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h5 class="fw-bold text-dark-blue mb-0">Dados Complementares</h5>
-                <a href="{{ url_for('complementary_data.dados_complementares', paciente_id=paciente.id) }}" class="btn btn-xs btn-outline-primary py-0 px-2 small" title="Editar Ficha" style="font-size: 0.75rem;">
+                <a href="{{ url_for('complementary_data.dados_complementares', paciente_id=paciente.id) }}" class="btn btn-xs btn-outline-navy py-0 px-2 small fs-7" title="Editar Ficha">
                     <i class="bi bi-pencil-square small"></i> {% if dados_complementares %}Editar{% else %}Preencher{% endif %}
                 </a>
             </div>
@@ -168,7 +168,7 @@
                 <span class="fw-semibold text-dark-blue text-capitalize">{{ dados_complementares.atividade_profissional }}</span>
             </div>
             {% else %}
-            <div class="text-center py-3 text-muted border border-dashed rounded-3" style="border-color: var(--grey-border) !important;">
+            <div class="text-center py-3 text-muted border-dashed-custom rounded-3">
                 <i class="bi bi-person-lines-fill fs-3 mb-2 text-secondary d-block"></i>
                 <span class="small d-block mb-2">Sem dados complementares</span>
                 <a href="{{ url_for('complementary_data.dados_complementares', paciente_id=paciente.id) }}" class="btn btn-sm btn-navy px-3">
@@ -238,7 +238,7 @@
                                             <p class="text-muted small">Defina a data final da participação de <strong>{{ paciente.nome_completo }}</strong> no grupo <strong>{{ v.grupo.nome }}</strong>.</p>
                                             <div class="mb-3">
                                                 <label for="data_fim-{{ v.id }}" class="form-label fw-semibold text-dark-blue">Data de Encerramento (Desligamento)</label>
-                                                <input type="date" class="form-control" id="data_fim-{{ v.id }}" name="data_fim" value="{{ data_hoje }}" min="{{ v.data_inicio.strftime('%Y-%m-%d') }}" required style="border-color: var(--grey-border);">
+                                                <input type="date" class="form-control" id="data_fim-{{ v.id }}" name="data_fim" value="{{ data_hoje }}" min="{{ v.data_inicio.strftime('%Y-%m-%d') }}" required>
                                             </div>
                                         </div>
                                         <div class="modal-footer border-top-0 pt-0">
@@ -293,7 +293,7 @@
                 </table>
             </div>
             {% else %}
-            <div class="text-center py-5 text-muted border border-dashed rounded-3" style="border-color: var(--grey-border) !important;">
+            <div class="text-center py-5 text-muted border-dashed-custom rounded-3">
                 <i class="bi bi-file-earmark-medical fs-1 mb-3 text-secondary"></i>
                 <h6 class="fw-semibold text-dark-blue">Nenhum Exame Registrado</h6>
                 <p class="small text-muted mb-0 px-4">Use o botão "Lançar Exames" acima para cadastrar resultados clínicos do paciente.</p>
@@ -316,7 +316,7 @@
                     {% if grupos_disponiveis %}
                     <div class="mb-3">
                         <label for="id_grupo" class="form-label fw-semibold text-dark-blue">Selecionar Grupo de Atividade</label>
-                        <select class="form-select" id="id_grupo" name="id_grupo" required style="border-color: var(--grey-border);">
+                        <select class="form-select" id="id_grupo" name="id_grupo" required>
                             <option value="" disabled selected>Selecione um grupo...</option>
                             {% for g in grupos_disponiveis %}
                             <option value="{{ g.id }}">{{ g.nome }}</option>
@@ -325,7 +325,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="data_inicio" class="form-label fw-semibold text-dark-blue">Data de Início</label>
-                        <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_hoje }}" required style="border-color: var(--grey-border);">
+                        <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ data_hoje }}" required>
                     </div>
                     {% else %}
                     <div class="alert alert-info border-0 mb-0 py-3" role="alert">

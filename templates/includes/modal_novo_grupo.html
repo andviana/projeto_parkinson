@@ -1,0 +1,24 @@
+<!-- Modal de Criação de Novo Grupo (Compartilhado) -->
+<div class="modal fade" id="modalNovoGrupo" tabindex="-1" aria-labelledby="modalNovoGrupoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-white border-bottom-0 pb-0">
+                <h5 class="modal-title fw-bold text-dark-blue" id="modalNovoGrupoLabel">Cadastrar Novo Grupo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('grupos.grupos') }}" method="POST">
+                <div class="modal-body py-4">
+                    <div class="mb-3">
+                        <label for="nome" class="form-label fw-semibold text-dark-blue">Nome do Grupo de Atividade</label>
+                        <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Grupo D - Estimulação Cognitiva" required>
+                        <div class="form-text text-muted">Defina um nome único e descritivo para o grupo clínico.</div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top-0 pt-0">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-navy btn-sm px-3">Criar Grupo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

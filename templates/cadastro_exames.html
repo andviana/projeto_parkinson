@@ -22,9 +22,9 @@
             <table class="table table-hover align-middle table-custom">
                 <thead>
                     <tr>
-                        <th style="width: 40%;">Escala / Exame Clínico</th>
-                        <th style="width: 30%;">Data do Exame</th>
-                        <th style="width: 30%;">Nota Final (Resultado)</th>
+                        <th class="th-w-40">Escala / Exame Clínico</th>
+                        <th class="th-w-30">Data do Exame</th>
+                        <th class="th-w-30">Nota Final (Resultado)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,11 +35,11 @@
                             <div class="text-muted small">Escala de Depressão Geriátrica (0 a 30)</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="gds_date" name="gds_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="gds_date" name="gds_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="gds_score" name="gds_score" placeholder="Nota de 0 a 30" min="0" max="30" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="gds_score" name="gds_score" placeholder="Nota de 0 a 30" min="0" max="30" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -51,11 +51,11 @@
                             <div class="text-muted small">Avaliação Cognitiva de Montreal (0 a 30)</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="moca_date" name="moca_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="moca_date" name="moca_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="moca_score" name="moca_score" placeholder="Nota de 0 a 30" min="0" max="30" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="moca_score" name="moca_score" placeholder="Nota de 0 a 30" min="0" max="30" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -67,11 +67,11 @@
                             <div class="text-muted small">Escala Rápida de Rastreio</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="spdds_date" name="spdds_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="spdds_date" name="spdds_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="spdds_score" name="spdds_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="spdds_score" name="spdds_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -83,11 +83,11 @@
                             <div class="text-muted small">Estado Mental, Comportamento e Humor</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="updrs_i_date" name="updrs_i_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="updrs_i_date" name="updrs_i_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="updrs_i_score" name="updrs_i_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="updrs_i_score" name="updrs_i_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -99,11 +99,11 @@
                             <div class="text-muted small">Atividades de Vida Diária (AVD)</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="updrs_ii_date" name="updrs_ii_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="updrs_ii_date" name="updrs_ii_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="updrs_ii_score" name="updrs_ii_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="updrs_ii_score" name="updrs_ii_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -115,11 +115,11 @@
                             <div class="text-muted small">Exame Motor</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="updrs_iii_date" name="updrs_iii_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="updrs_iii_date" name="updrs_iii_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="updrs_iii_score" name="updrs_iii_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="updrs_iii_score" name="updrs_iii_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -131,11 +131,11 @@
                             <div class="text-muted small">Complicações da Terapia Motora</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="updrs_iv_date" name="updrs_iv_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="updrs_iv_date" name="updrs_iv_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="updrs_iv_score" name="updrs_iv_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="updrs_iv_score" name="updrs_iv_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -147,11 +147,11 @@
                             <div class="text-muted small">Estágio de Incapacidade Motora (0.0 a 5.0)</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="hoehn_yahr_date" name="hoehn_yahr_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="hoehn_yahr_date" name="hoehn_yahr_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="hoehn_yahr_score" name="hoehn_yahr_score" placeholder="Nota (Ex: 2.5)" min="0" max="5" step="0.5" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="hoehn_yahr_score" name="hoehn_yahr_score" placeholder="Nota (Ex: 2.5)" min="0" max="5" step="0.5">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -163,11 +163,11 @@
                             <div class="text-muted small">Inventários de Ansiedade e Depressão</div>
                         </td>
                         <td>
-                            <input type="date" class="form-control exam-date" id="beck_date" name="beck_date" style="border-color: var(--grey-border);">
+                            <input type="date" class="form-control exam-date" id="beck_date" name="beck_date">
                             <div class="invalid-feedback">A data é obrigatória se a nota for preenchida.</div>
                         </td>
                         <td>
-                            <input type="number" class="form-control exam-score" id="beck_score" name="beck_score" placeholder="Nota Final" min="0" step="1" style="border-color: var(--grey-border);">
+                            <input type="number" class="form-control exam-score" id="beck_score" name="beck_score" placeholder="Nota Final" min="0" step="1">
                             <div class="invalid-feedback">A nota é obrigatória se a data for preenchida.</div>
                         </td>
                     </tr>
@@ -185,64 +185,8 @@
         </div>
     </form>
 </div>
+{% endblock %}
 
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    const todayStr = "{{ data_hoje }}";
-    
-    // Auxiliar para preencher data de hoje para todas as linhas
-    document.getElementById('btn-data-hoje').addEventListener('click', function() {
-        const dates = document.querySelectorAll('.exam-date');
-        dates.forEach(function(d) {
-            d.value = todayStr;
-        });
-    });
-
-    const form = document.getElementById('form-cadastro-exames');
-    const exams = ['gds', 'moca', 'spdds', 'updrs_i', 'updrs_ii', 'updrs_iii', 'updrs_iv', 'hoehn_yahr', 'beck'];
-
-    form.addEventListener('submit', function(event) {
-        let isValid = true;
-        let hasAtLeastOne = false;
-        
-        // Limpar estados invalidos anteriores
-        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-
-        exams.forEach(function(exam) {
-            const dateInput = document.getElementById(exam + '_date');
-            const scoreInput = document.getElementById(exam + '_score');
-
-            const hasDate = dateInput.value !== '';
-            const hasScore = scoreInput.value !== '';
-
-            // Se um está preenchido e o outro vazio, aciona a regra
-            if (hasDate && !hasScore) {
-                isValid = false;
-                scoreInput.classList.add('is-invalid');
-            } else if (!hasDate && hasScore) {
-                isValid = false;
-                dateInput.classList.add('is-invalid');
-            }
-
-            if (hasDate && hasScore) {
-                hasAtLeastOne = true;
-            }
-        });
-
-        // Caso a validação de preenchimento mútuo falhe
-        if (!isValid) {
-            event.preventDefault();
-            alert('Erro de Validação: Para salvar um exame, você deve preencher tanto a Data do Exame quanto a Nota Final.');
-            return;
-        }
-
-        // Caso nenhum exame esteja preenchido
-        if (!hasAtLeastOne) {
-            event.preventDefault();
-            alert('Atenção: Nenhum exame foi preenchido. Lance pelo menos uma avaliação para poder salvar.');
-            return;
-        }
-    });
-});
-</script>
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/cadastro_exames.js') }}"></script>
 {% endblock %}

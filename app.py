@@ -51,6 +51,20 @@ def create_app():
     app.register_blueprint(clinical_data_bp)
     app.register_blueprint(complementary_data_bp)
 
+    # Cache-busting automático para assets estáticos em templates
+    @app.context_processor
+    def override_url_for():
+        from flask import url_for
+        def dated_url_for(endpoint, **values):
+            if endpoint == 'static':
+                filename = values.get('filename', None)
+                if filename:
+                    file_path = os.path.join(app.static_folder, filename)
+                    if os.path.exists(file_path):
+                        values['v'] = int(os.stat(file_path).st_mtime)
+            return url_for(endpoint, **values)
+        return dict(url_for=dated_url_for)
+
     @app.errorhandler(403)
     def forbidden(e):
         return render_template('base.html', page_title="Acesso Negado"), 403

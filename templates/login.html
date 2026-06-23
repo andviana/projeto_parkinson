@@ -5,7 +5,7 @@
 {% block page_title %}Autenticação de Usuário{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center align-items-center py-5" style="min-height: calc(100vh - 180px);">
+<div class="row justify-content-center align-items-center py-5 login-row">
     <div class="col-md-5">
         <div class="card-custom border-top border-4 border-primary shadow-lg p-5">
             <div class="text-center mb-4">
@@ -20,27 +20,27 @@
                 <div class="mb-3">
                     <label for="username" class="form-label fw-semibold text-dark-blue">Nome de Usuário</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0" style="border-color: var(--grey-border);">
+                        <span class="input-group-text bg-white border-end-0">
                             <i class="bi bi-person-fill text-muted"></i>
                         </span>
                         <input type="text" class="form-control border-start-0 ps-0" id="username" name="username"
-                            placeholder="Digite seu usuário" required style="border-color: var(--grey-border);">
+                            placeholder="Digite seu usuário" required>
                     </div>
                 </div>
 
                 <div class="mb-4">
                     <label for="password" class="form-label fw-semibold text-dark-blue">Senha de Acesso</label>
                     <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0" style="border-color: var(--grey-border);">
+                        <span class="input-group-text bg-white border-end-0">
                             <i class="bi bi-key-fill text-muted"></i>
                         </span>
                         <input type="password" class="form-control border-start-0 ps-0" id="password" name="password"
-                            placeholder="Digite sua senha" required style="border-color: var(--grey-border);">
+                            placeholder="Digite sua senha" required>
                     </div>
                 </div>
 
                 <div class="d-grid">
-                    <button type="submit" class="btn btn-navy py-2.5 fw-bold">
+                    <button type="submit" class="btn btn-navy py-2 fw-bold">
                         <i class="bi bi-box-arrow-in-right me-1"></i> Entrar
                     </button>
                 </div>

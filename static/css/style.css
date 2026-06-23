@@ -153,12 +153,6 @@ body {
     padding: 0.35em 0.65em;
     border-radius: 4px;
 }
-
-.badge-tipo-pd {
-    background-color: #fee2e2; /* vermelho pastel, mas queremos respeitar cinza/azul. */
-    color: #991b1b;
-}
-
 /* Vamos redefinir badges de acordo com a paleta: cinza e azul */
 .badge-pd {
     background-color: rgba(30, 58, 138, 0.1);
@@ -248,7 +242,7 @@ body {
     height: 100%;
     background-color: rgba(15, 23, 42, 0.7);
     z-index: 9999;
-    display: flex;
+    display: none; /* Oculto por padrão, JS exibe como flex */
     justify-content: center;
     align-items: center;
 }
@@ -262,4 +256,59 @@ body {
     font-weight: 600;
     font-size: 1.1rem;
     letter-spacing: 0.5px;
+}
+
+/* Estilo padrão de Inputs */
+.form-control, .form-select {
+    border-color: var(--grey-border);
+}
+
+/* Classes Utilitárias do Design System */
+.fs-7 {
+    font-size: 0.75rem !important;
+}
+
+.spinner-loading {
+    width: 3rem !important;
+    height: 3rem !important;
+}
+
+.login-row {
+    min-height: calc(100vh - 180px);
+}
+
+.switch-large {
+    width: 2.5em !important;
+    height: 1.25em !important;
+}
+
+.border-dashed-custom {
+    border-style: dashed !important;
+    border-color: var(--grey-border) !important;
+}
+
+.divider-grey {
+    border-top: 1px solid var(--grey-border) !important;
+    opacity: 1 !important;
+}
+
+.th-w-40 {
+    width: 40%;
+}
+
+.th-w-30 {
+    width: 30%;
+}
+
+.btn-outline-navy {
+    color: var(--navy-primary);
+    border-color: var(--navy-primary);
+    background-color: transparent;
+    transition: all var(--transition-speed) ease-in-out;
+}
+
+.btn-outline-navy:hover {
+    color: var(--white);
+    background-color: var(--navy-primary);
+    border-color: var(--navy-primary);
 }
