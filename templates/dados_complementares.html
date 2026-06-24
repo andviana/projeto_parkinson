@@ -8,7 +8,8 @@
 <div class="row justify-content-center">
     <div class="col-xl-8">
         <!-- Voltar -->
-        <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}" class="btn btn-sm btn-outline-secondary mb-4">
+        <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}"
+            class="btn btn-sm btn-outline-secondary mb-4">
             <i class="bi bi-arrow-left me-1"></i> Voltar para Prontuário
         </a>
 
@@ -19,7 +20,8 @@
         <form action="{{ url_for('complementary_data.dados_complementares', paciente_id=paciente.id) }}" method="POST">
             <div class="card-custom mb-4">
                 <div class="border-bottom pb-3 mb-4">
-                    <h5 class="fw-bold text-dark-blue mb-1"><i class="bi bi-person-lines-fill text-primary-blue me-2"></i>Dados Complementares</h5>
+                    <h5 class="fw-bold text-dark-blue mb-1"><i
+                            class="bi bi-person-lines-fill text-primary-blue me-2"></i>Dados Complementares</h5>
                     <p class="text-muted small mb-0">Registre os dados sociodemográficos e de contato do paciente.</p>
                 </div>
 
@@ -27,19 +29,25 @@
                     <!-- Telefone -->
                     <div class="col-md-6 mb-3">
                         <label for="telefone" class="form-label fw-semibold text-dark-blue">Telefone de Contato</label>
-                        <input type="text" class="form-control" id="telefone" name="telefone" 
-                               placeholder="DDD + nº Telefone" required
-                               value="{% if dados_complementares %}{% if dados_complementares.telefone|length == 10 %}{{ dados_complementares.telefone[:2] }}-{{ dados_complementares.telefone[2:] }}{% else %}{{ dados_complementares.telefone[:2] }}-{{ dados_complementares.telefone[2:] }}{% endif %}{% endif %}">
+                        <input type="text" class="form-control" id="telefone" name="telefone"
+                            placeholder="DDD + nº Telefone" required
+                            value="{% if dados_complementares %}{% if dados_complementares.telefone|length == 10 %}{{ dados_complementares.telefone[:2] }}-{{ dados_complementares.telefone[2:] }}{% else %}{{ dados_complementares.telefone[:2] }}-{{ dados_complementares.telefone[2:] }}{% endif %}{% endif %}">
                         <div class="form-text text-muted">Ex: 11-987654321</div>
                     </div>
 
                     <!-- Domínio Manual -->
                     <div class="col-md-6 mb-3">
-                        <label for="dominio_manual" class="form-label fw-semibold text-dark-blue">Domínio Manual (Lateralidade)</label>
+                        <label for="dominio_manual" class="form-label fw-semibold text-dark-blue">Domínio Manual
+                            (Lateralidade)</label>
                         <select class="form-select" id="dominio_manual" name="dominio_manual" required>
-                            <option value="" {% if not dados_complementares or not dados_complementares.dominio_manual %}selected{% endif %} disabled>Selecione...</option>
-                            <option value="destro(a)" {% if dados_complementares and dados_complementares.dominio_manual == 'destro(a)' %}selected{% endif %}>Destro(a)</option>
-                            <option value="sinistro(a)" {% if dados_complementares and dados_complementares.dominio_manual == 'sinistro(a)' %}selected{% endif %}>Sinistro(a)</option>
+                            <option value="" {% if not dados_complementares or not dados_complementares.dominio_manual
+                                %}selected{% endif %} disabled>Selecione...</option>
+                            <option value="destro(a)" {% if dados_complementares and
+                                dados_complementares.dominio_manual=='destro(a)' %}selected{% endif %}>Destro(a)
+                            </option>
+                            <option value="sinistro(a)" {% if dados_complementares and
+                                dados_complementares.dominio_manual=='sinistro(a)' %}selected{% endif %}>Sinistro(a)
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -49,11 +57,16 @@
                     <div class="col-md-6 mb-3">
                         <label for="cor" class="form-label fw-semibold text-dark-blue">Cor / Raça / Etnia</label>
                         <select class="form-select" id="cor" name="cor" required>
-                            <option value="" {% if not dados_complementares or not dados_complementares.cor %}selected{% endif %} disabled>Selecione...</option>
-                            <option value="pardo(a)" {% if dados_complementares and dados_complementares.cor == 'pardo(a)' %}selected{% endif %}>Pardo(a)</option>
-                            <option value="branco(a)" {% if dados_complementares and dados_complementares.cor == 'branco(a)' %}selected{% endif %}>Branco(a)</option>
-                            <option value="negro(a)" {% if dados_complementares and dados_complementares.cor == 'negro(a)' %}selected{% endif %}>Negro(a)</option>
-                            <option value="amarelo(a)" {% if dados_complementares and dados_complementares.cor == 'amarelo(a)' %}selected{% endif %}>Amarelo(a)</option>
+                            <option value="" {% if not dados_complementares or not dados_complementares.cor %}selected{%
+                                endif %} disabled>Selecione...</option>
+                            <option value="pardo(a)" {% if dados_complementares and dados_complementares.cor=='pardo(a)'
+                                %}selected{% endif %}>Pardo(a)</option>
+                            <option value="branco(a)" {% if dados_complementares and
+                                dados_complementares.cor=='branco(a)' %}selected{% endif %}>Branco(a)</option>
+                            <option value="negro(a)" {% if dados_complementares and dados_complementares.cor=='negro(a)'
+                                %}selected{% endif %}>Negro(a)</option>
+                            <option value="amarelo(a)" {% if dados_complementares and
+                                dados_complementares.cor=='amarelo(a)' %}selected{% endif %}>Amarelo(a)</option>
                         </select>
                     </div>
 
@@ -61,12 +74,21 @@
                     <div class="col-md-6 mb-3">
                         <label for="estado_civil" class="form-label fw-semibold text-dark-blue">Estado Civil</label>
                         <select class="form-select" id="estado_civil" name="estado_civil" required>
-                            <option value="" {% if not dados_complementares or not dados_complementares.estado_civil %}selected{% endif %} disabled>Selecione...</option>
-                            <option value="solteiro(a)" {% if dados_complementares and dados_complementares.estado_civil == 'solteiro(a)' %}selected{% endif %}>Solteiro(a)</option>
-                            <option value="casado(a)" {% if dados_complementares and dados_complementares.estado_civil == 'casado(a)' %}selected{% endif %}>Casado(a)</option>
-                            <option value="separado(a)" {% if dados_complementares and dados_complementares.estado_civil == 'separado(a)' %}selected{% endif %}>Separado(a)</option>
-                            <option value="viuvo(a)" {% if dados_complementares and dados_complementares.estado_civil == 'viuvo(a)' %}selected{% endif %}>Viúvo(a)</option>
-                            <option value="divorciado(a)" {% if dados_complementares and dados_complementares.estado_civil == 'divorciado(a)' %}selected{% endif %}>Divorciado(a)</option>
+                            <option value="" {% if not dados_complementares or not dados_complementares.estado_civil
+                                %}selected{% endif %} disabled>Selecione...</option>
+                            <option value="solteiro(a)" {% if dados_complementares and
+                                dados_complementares.estado_civil=='solteiro(a)' %}selected{% endif %}>Solteiro(a)
+                            </option>
+                            <option value="casado(a)" {% if dados_complementares and
+                                dados_complementares.estado_civil=='casado(a)' %}selected{% endif %}>Casado(a)</option>
+                            <option value="separado(a)" {% if dados_complementares and
+                                dados_complementares.estado_civil=='separado(a)' %}selected{% endif %}>Separado(a)
+                            </option>
+                            <option value="viuvo(a)" {% if dados_complementares and
+                                dados_complementares.estado_civil=='viuvo(a)' %}selected{% endif %}>Viúvo(a)</option>
+                            <option value="divorciado(a)" {% if dados_complementares and
+                                dados_complementares.estado_civil=='divorciado(a)' %}selected{% endif %}>Divorciado(a)
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -74,30 +96,61 @@
                 <div class="row">
                     <!-- Escolaridade -->
                     <div class="col-md-6 mb-3">
-                        <label for="escolaridade" class="form-label fw-semibold text-dark-blue">Nível de Escolaridade</label>
+                        <label for="escolaridade" class="form-label fw-semibold text-dark-blue">Nível de
+                            Escolaridade</label>
                         <select class="form-select" id="escolaridade" name="escolaridade" required>
-                            <option value="" {% if not dados_complementares or not dados_complementares.escolaridade %}selected{% endif %} disabled>Selecione...</option>
-                            <option value="fundamental incompleto" {% if dados_complementares and dados_complementares.escolaridade == 'fundamental incompleto' %}selected{% endif %}>Fundamental Incompleto</option>
-                            <option value="fundamental completo" {% if dados_complementares and dados_complementares.escolaridade == 'fundamental completo' %}selected{% endif %}>Fundamental Completo</option>
-                            <option value="medio incompleto" {% if dados_complementares and dados_complementares.escolaridade == 'medio incompleto' %}selected{% endif %}>Médio Incompleto</option>
-                            <option value="medio completo" {% if dados_complementares and dados_complementares.escolaridade == 'medio completo' %}selected{% endif %}>Médio Completo</option>
-                            <option value="superior incompleto" {% if dados_complementares and dados_complementares.escolaridade == 'superior incompleto' %}selected{% endif %}>Superior Incompleto</option>
-                            <option value="superior completo" {% if dados_complementares and dados_complementares.escolaridade == 'superior completo' %}selected{% endif %}>Superior Completo</option>
-                            <option value="pós graduação" {% if dados_complementares and dados_complementares.escolaridade == 'pós graduação' %}selected{% endif %}>Pós-Graduação</option>
+                            <option value="" {% if not dados_complementares or not dados_complementares.escolaridade
+                                %}selected{% endif %} disabled>Selecione...</option>
+                            <option value="fundamental incompleto" {% if dados_complementares and
+                                dados_complementares.escolaridade=='fundamental incompleto' %}selected{% endif %}>
+                                Fundamental Incompleto</option>
+                            <option value="fundamental completo" {% if dados_complementares and
+                                dados_complementares.escolaridade=='fundamental completo' %}selected{% endif %}>
+                                Fundamental Completo</option>
+                            <option value="medio incompleto" {% if dados_complementares and
+                                dados_complementares.escolaridade=='medio incompleto' %}selected{% endif %}>Médio
+                                Incompleto</option>
+                            <option value="medio completo" {% if dados_complementares and
+                                dados_complementares.escolaridade=='medio completo' %}selected{% endif %}>Médio Completo
+                            </option>
+                            <option value="superior incompleto" {% if dados_complementares and
+                                dados_complementares.escolaridade=='superior incompleto' %}selected{% endif %}>Superior
+                                Incompleto</option>
+                            <option value="superior completo" {% if dados_complementares and
+                                dados_complementares.escolaridade=='superior completo' %}selected{% endif %}>Superior
+                                Completo</option>
+                            <option value="pós graduação" {% if dados_complementares and
+                                dados_complementares.escolaridade=='pós graduação' %}selected{% endif %}>Pós-Graduação
+                            </option>
                         </select>
                     </div>
 
                     <!-- Atividade Profissional -->
                     <div class="col-md-6 mb-3">
-                        <label for="atividade_profissional" class="form-label fw-semibold text-dark-blue">Atividade Profissional</label>
+                        <label for="atividade_profissional" class="form-label fw-semibold text-dark-blue">Atividade
+                            Profissional</label>
                         <select class="form-select" id="atividade_profissional" name="atividade_profissional" required>
-                            <option value="" {% if not dados_complementares or not dados_complementares.atividade_profissional %}selected{% endif %} disabled>Selecione...</option>
-                            <option value="aposentado(a)" {% if dados_complementares and dados_complementares.atividade_profissional == 'aposentado(a)' %}selected{% endif %}>Aposentado(a)</option>
-                            <option value="desempregado(a)" {% if dados_complementares and dados_complementares.atividade_profissional == 'desempregado(a)' %}selected{% endif %}>Desempregado(a)</option>
-                            <option value="trabalhador(a) ativo(a)" {% if dados_complementares and dados_complementares.atividade_profissional == 'trabalhador(a) ativo(a)' %}selected{% endif %}>Trabalhador(a) Ativo(a)</option>
-                            <option value="auxilio doença" {% if dados_complementares and dados_complementares.atividade_profissional == 'auxilio doença' %}selected{% endif %}>Auxílio-Doença</option>
-                            <option value="beneficiario(a)" {% if dados_complementares and dados_complementares.atividade_profissional == 'beneficiario(a)' %}selected{% endif %}>Beneficiário(a)</option>
-                            <option value="amparo social" {% if dados_complementares and dados_complementares.atividade_profissional == 'amparo social' %}selected{% endif %}>Amparo Social</option>
+                            <option value="" {% if not dados_complementares or not
+                                dados_complementares.atividade_profissional %}selected{% endif %} disabled>Selecione...
+                            </option>
+                            <option value="aposentado(a)" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='aposentado(a)' %}selected{% endif %}>
+                                Aposentado(a)</option>
+                            <option value="desempregado(a)" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='desempregado(a)' %}selected{% endif %}>
+                                Desempregado(a)</option>
+                            <option value="trabalhador(a) ativo(a)" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='trabalhador(a) ativo(a)' %}selected{%
+                                endif %}>Trabalhador(a) Ativo(a)</option>
+                            <option value="auxilio doença" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='auxilio doença' %}selected{% endif %}>
+                                Auxílio-Doença</option>
+                            <option value="beneficiario(a)" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='beneficiario(a)' %}selected{% endif %}>
+                                Beneficiário(a)</option>
+                            <option value="amparo social" {% if dados_complementares and
+                                dados_complementares.atividade_profissional=='amparo social' %}selected{% endif %}>
+                                Amparo Social</option>
                         </select>
                     </div>
                 </div>
@@ -105,7 +158,8 @@
 
             <!-- Botões de Ação -->
             <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}" class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
+                <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}"
+                    class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
                 <button type="submit" class="btn btn-navy px-5 py-2">
                     <i class="bi bi-check-circle me-1"></i> Salvar Dados
                 </button>
@@ -113,6 +167,8 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/dados_complementares.js') }}"></script>

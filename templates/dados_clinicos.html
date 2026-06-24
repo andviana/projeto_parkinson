@@ -8,7 +8,8 @@
 <div class="row justify-content-center">
     <div class="col-xl-10">
         <!-- Voltar -->
-        <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}" class="btn btn-sm btn-outline-secondary mb-4">
+        <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}"
+            class="btn btn-sm btn-outline-secondary mb-4">
             <i class="bi bi-arrow-left me-1"></i> Voltar para Prontuário
         </a>
 
@@ -17,30 +18,36 @@
 
         <!-- Formulário -->
         <form action="{{ url_for('clinical_data.dados_clinicos', paciente_id=paciente.id) }}" method="POST">
-            
+
             <!-- SEÇÃO 1: SINTOMAS E QUADRO INICIAL -->
             <div class="card-custom mb-4">
                 <div class="border-bottom pb-3 mb-4">
-                    <h5 class="fw-bold text-dark-blue mb-1"><i class="bi bi-activity text-primary-blue me-2"></i>Histórico de Sintomas Iniciais</h5>
-                    <p class="text-muted small mb-0">Registre o tempo de aparecimento dos primeiros sintomas e suas localizações primárias.</p>
+                    <h5 class="fw-bold text-dark-blue mb-1"><i
+                            class="bi bi-activity text-primary-blue me-2"></i>Histórico de Sintomas Iniciais</h5>
+                    <p class="text-muted small mb-0">Registre o tempo de aparecimento dos primeiros sintomas e suas
+                        localizações primárias.</p>
                 </div>
-                
+
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <label for="tempo_inicio_sintomas_anos" class="form-label fw-semibold text-dark-blue">Tempo desde o Início dos Sintomas (anos)</label>
-                        <input type="number" class="form-control" id="tempo_inicio_sintomas_anos" name="tempo_inicio_sintomas_anos" min="0" placeholder="Ex: 3"
-                               value="{{ dados_clinicos.tempo_inicio_sintomas_anos if dados_clinicos and dados_clinicos.tempo_inicio_sintomas_anos is not none else '' }}">
+                        <label for="tempo_inicio_sintomas_anos" class="form-label fw-semibold text-dark-blue">Tempo
+                            desde o Início dos Sintomas (anos)</label>
+                        <input type="number" class="form-control" id="tempo_inicio_sintomas_anos"
+                            name="tempo_inicio_sintomas_anos" min="0" placeholder="Ex: 3"
+                            value="{{ dados_clinicos.tempo_inicio_sintomas_anos if dados_clinicos and dados_clinicos.tempo_inicio_sintomas_anos is not none else '' }}">
                     </div>
                 </div>
 
                 <div class="mb-4">
-                    <label class="form-label fw-semibold text-dark-blue d-block mb-3">Sintomas Iniciais Observados (Múltipla Escolha)</label>
+                    <label class="form-label fw-semibold text-dark-blue d-block mb-3">Sintomas Iniciais Observados
+                        (Múltipla Escolha)</label>
                     <div class="row">
                         {% for s in sintomas_dominio %}
                         <div class="col-sm-6 col-md-4 mb-2">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="sintomas_iniciais" value="{{ s.id }}" id="sintoma-{{ s.id }}"
-                                       {% if dados_clinicos and s.id in dados_clinicos.sintomas_ids %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" name="sintomas_iniciais"
+                                    value="{{ s.id }}" id="sintoma-{{ s.id }}" {% if dados_clinicos and s.id in
+                                    dados_clinicos.sintomas_ids %}checked{% endif %}>
                                 <label class="form-check-label text-capitalize text-dark-blue" for="sintoma-{{ s.id }}">
                                     {{ s.nome }}
                                 </label>
@@ -51,13 +58,15 @@
                 </div>
 
                 <div class="mb-2">
-                    <label class="form-label fw-semibold text-dark-blue d-block mb-3">Localização do Início dos Sintomas (Múltipla Escolha)</label>
+                    <label class="form-label fw-semibold text-dark-blue d-block mb-3">Localização do Início dos Sintomas
+                        (Múltipla Escolha)</label>
                     <div class="row">
                         {% for l in localizacoes_dominio %}
                         <div class="col-6 col-sm-4 col-md-3 mb-2">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="localizacao" value="{{ l.id }}" id="loc-{{ l.id }}"
-                                       {% if dados_clinicos and l.id in dados_clinicos.localizacoes_ids %}checked{% endif %}>
+                                <input class="form-check-input" type="checkbox" name="localizacao" value="{{ l.id }}"
+                                    id="loc-{{ l.id }}" {% if dados_clinicos and l.id in dados_clinicos.localizacoes_ids
+                                    %}checked{% endif %}>
                                 <label class="form-check-label text-dark-blue" for="loc-{{ l.id }}">
                                     {{ l.sigla }}
                                 </label>
@@ -71,29 +80,49 @@
             <!-- SEÇÃO 2: TRATAMENTO E HÁBITOS DE VIDA -->
             <div class="card-custom mb-4">
                 <div class="border-bottom pb-3 mb-4">
-                    <h5 class="fw-bold text-dark-blue mb-1"><i class="bi bi-heart-pulse text-primary-blue me-2"></i>Tratamento e Hábitos de Vida</h5>
-                    <p class="text-muted small mb-0">Informações sobre reações farmacológicas, cirurgias e hábitos cotidianos.</p>
+                    <h5 class="fw-bold text-dark-blue mb-1"><i
+                            class="bi bi-heart-pulse text-primary-blue me-2"></i>Tratamento e Hábitos de Vida</h5>
+                    <p class="text-muted small mb-0">Informações sobre reações farmacológicas, cirurgias e hábitos
+                        cotidianos.</p>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="resposta_motora" class="form-label fw-semibold text-dark-blue">Resposta Motora à Levodopa</label>
+                        <label for="resposta_motora" class="form-label fw-semibold text-dark-blue">Resposta Motora à
+                            Levodopa</label>
                         <select class="form-select" id="resposta_motora" name="resposta_motora">
-                            <option value="" {% if not dados_clinicos or not dados_clinicos.resposta_motora %}selected{% endif %}>Não se aplica / Sem resposta</option>
-                            <option value="nenhuma melhora" {% if dados_clinicos and dados_clinicos.resposta_motora == 'nenhuma melhora' %}selected{% endif %}>Nenhuma melhora</option>
-                            <option value="pouca melhora" {% if dados_clinicos and dados_clinicos.resposta_motora == 'pouca melhora' %}selected{% endif %}>Pouca melhora</option>
-                            <option value="melhora parcial" {% if dados_clinicos and dados_clinicos.resposta_motora == 'melhora parcial' %}selected{% endif %}>Melhora parcial</option>
-                            <option value="melhora total" {% if dados_clinicos and dados_clinicos.resposta_motora == 'melhora total' %}selected{% endif %}>Melhora total</option>
+                            <option value="" {% if not dados_clinicos or not dados_clinicos.resposta_motora %}selected{%
+                                endif %}>Não se aplica / Sem resposta</option>
+                            <option value="nenhuma melhora" {% if dados_clinicos and
+                                dados_clinicos.resposta_motora=='nenhuma melhora' %}selected{% endif %}>Nenhuma melhora
+                            </option>
+                            <option value="pouca melhora" {% if dados_clinicos and
+                                dados_clinicos.resposta_motora=='pouca melhora' %}selected{% endif %}>Pouca melhora
+                            </option>
+                            <option value="melhora parcial" {% if dados_clinicos and
+                                dados_clinicos.resposta_motora=='melhora parcial' %}selected{% endif %}>Melhora parcial
+                            </option>
+                            <option value="melhora total" {% if dados_clinicos and
+                                dados_clinicos.resposta_motora=='melhora total' %}selected{% endif %}>Melhora total
+                            </option>
                         </select>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="tolerancia_levodopa" class="form-label fw-semibold text-dark-blue">Tolerância à Levodopa</label>
+                        <label for="tolerancia_levodopa" class="form-label fw-semibold text-dark-blue">Tolerância à
+                            Levodopa</label>
                         <select class="form-select" id="tolerancia_levodopa" name="tolerancia_levodopa">
-                            <option value="" {% if not dados_clinicos or not dados_clinicos.tolerancia_levodopa %}selected{% endif %}>Não se aplica / Sem registro</option>
-                            <option value="sem problemas" {% if dados_clinicos and dados_clinicos.tolerancia_levodopa == 'sem problemas' %}selected{% endif %}>Sem problemas</option>
-                            <option value="teve dificuldade" {% if dados_clinicos and dados_clinicos.tolerancia_levodopa == 'teve dificuldade' %}selected{% endif %}>Teve dificuldade</option>
-                            <option value="intolerancia" {% if dados_clinicos and dados_clinicos.tolerancia_levodopa == 'intolerancia' %}selected{% endif %}>Intolerância</option>
+                            <option value="" {% if not dados_clinicos or not dados_clinicos.tolerancia_levodopa
+                                %}selected{% endif %}>Não se aplica / Sem registro</option>
+                            <option value="sem problemas" {% if dados_clinicos and
+                                dados_clinicos.tolerancia_levodopa=='sem problemas' %}selected{% endif %}>Sem problemas
+                            </option>
+                            <option value="teve dificuldade" {% if dados_clinicos and
+                                dados_clinicos.tolerancia_levodopa=='teve dificuldade' %}selected{% endif %}>Teve
+                                dificuldade</option>
+                            <option value="intolerancia" {% if dados_clinicos and
+                                dados_clinicos.tolerancia_levodopa=='intolerancia' %}selected{% endif %}>Intolerância
+                            </option>
                         </select>
                     </div>
                 </div>
@@ -103,23 +132,29 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="form-check form-switch p-0 ps-5 mb-3">
-                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="uso_regular_cafe" name="uso_regular_cafe" value="true"
-                                   {% if dados_clinicos and dados_clinicos.uso_regular_cafe %}checked{% endif %}>
-                            <label class="form-check-label fw-semibold text-dark-blue ps-2" for="uso_regular_cafe">Consome Café Regularmente</label>
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch"
+                                id="uso_regular_cafe" name="uso_regular_cafe" value="true" {% if dados_clinicos and
+                                dados_clinicos.uso_regular_cafe %}checked{% endif %}>
+                            <label class="form-check-label fw-semibold text-dark-blue ps-2"
+                                for="uso_regular_cafe">Consome Café Regularmente</label>
                         </div>
-                        
+
                         <div class="mb-3 d-none" id="div_frequencia_cafe">
-                            <label for="frequencia_por_dia" class="form-label fw-semibold text-dark-blue">Frequência por Dia (Xícaras)</label>
-                            <input type="number" class="form-control" id="frequencia_por_dia" name="frequencia_por_dia" min="1" placeholder="Ex: 3"
-                                   value="{{ dados_clinicos.frequencia_por_dia if dados_clinicos and dados_clinicos.frequencia_por_dia is not none else '' }}">
+                            <label for="frequencia_por_dia" class="form-label fw-semibold text-dark-blue">Frequência por
+                                Dia (Xícaras)</label>
+                            <input type="number" class="form-control" id="frequencia_por_dia" name="frequencia_por_dia"
+                                min="1" placeholder="Ex: 3"
+                                value="{{ dados_clinicos.frequencia_por_dia if dados_clinicos and dados_clinicos.frequencia_por_dia is not none else '' }}">
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-4">
                         <div class="form-check form-switch p-0 ps-5">
-                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="cirurgia_dp" name="cirurgia_dp" value="true"
-                                   {% if dados_clinicos and dados_clinicos.cirurgia_dp %}checked{% endif %}>
-                            <label class="form-check-label fw-semibold text-dark-blue ps-2" for="cirurgia_dp">Já realizou Cirurgia de Estimulação Cerebral (DBS / DP)</label>
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch"
+                                id="cirurgia_dp" name="cirurgia_dp" value="true" {% if dados_clinicos and
+                                dados_clinicos.cirurgia_dp %}checked{% endif %}>
+                            <label class="form-check-label fw-semibold text-dark-blue ps-2" for="cirurgia_dp">Já
+                                realizou Cirurgia de Estimulação Cerebral (DBS / DP)</label>
                         </div>
                     </div>
                 </div>
@@ -128,29 +163,37 @@
             <!-- SEÇÃO 3: HISTÓRICO PESSOAL E FAMILIAR -->
             <div class="card-custom mb-4">
                 <div class="border-bottom pb-3 mb-4">
-                    <h5 class="fw-bold text-dark-blue mb-1"><i class="bi bi-people text-primary-blue me-2"></i>Histórico Pessoal e Familiar</h5>
-                    <p class="text-muted small mb-0">Histórico de substâncias, etnia de ancestrais e fatores genéticos/familiares da doença.</p>
+                    <h5 class="fw-bold text-dark-blue mb-1"><i class="bi bi-people text-primary-blue me-2"></i>Histórico
+                        Pessoal e Familiar</h5>
+                    <p class="text-muted small mb-0">Histórico de substâncias, etnia de ancestrais e fatores
+                        genéticos/familiares da doença.</p>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-md-6 mb-3">
                         <div class="form-check form-switch p-0 ps-5 mb-3">
-                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch" id="abuso_substancia" name="abuso_substancia" value="true"
-                                   {% if dados_clinicos and dados_clinicos.abuso_substancia %}checked{% endif %}>
-                            <label class="form-check-label fw-semibold text-dark-blue ps-2" for="abuso_substancia">Histórico de Abuso de Substâncias</label>
+                            <input class="form-check-input ms-n5 switch-large" type="checkbox" role="switch"
+                                id="abuso_substancia" name="abuso_substancia" value="true" {% if dados_clinicos and
+                                dados_clinicos.abuso_substancia %}checked{% endif %}>
+                            <label class="form-check-label fw-semibold text-dark-blue ps-2"
+                                for="abuso_substancia">Histórico de Abuso de Substâncias</label>
                         </div>
-                        
+
                         <div class="mb-3 d-none" id="div_qual_substancia">
-                            <label for="qual_substancia" class="form-label fw-semibold text-dark-blue">Especifique a Substância</label>
-                            <input type="text" class="form-control" id="qual_substancia" name="qual_substancia" placeholder="Ex: Álcool, Tabaco, Solventes..."
-                                   value="{{ dados_clinicos.qual_substancia if dados_clinicos and dados_clinicos.qual_substancia else '' }}">
+                            <label for="qual_substancia" class="form-label fw-semibold text-dark-blue">Especifique a
+                                Substância</label>
+                            <input type="text" class="form-control" id="qual_substancia" name="qual_substancia"
+                                placeholder="Ex: Álcool, Tabaco, Solventes..."
+                                value="{{ dados_clinicos.qual_substancia if dados_clinicos and dados_clinicos.qual_substancia else '' }}">
                         </div>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="ancestrais" class="form-label fw-semibold text-dark-blue">Origem de Ancestrais / Etnia</label>
-                        <input type="text" class="form-control" id="ancestrais" name="ancestrais" placeholder="Ex: Italiana, Espanhola, Indígena..."
-                               value="{{ dados_clinicos.ancestrais if dados_clinicos and dados_clinicos.ancestrais else '' }}">
+                        <label for="ancestrais" class="form-label fw-semibold text-dark-blue">Origem de Ancestrais /
+                            Etnia</label>
+                        <input type="text" class="form-control" id="ancestrais" name="ancestrais"
+                            placeholder="Ex: Italiana, Espanhola, Indígena..."
+                            value="{{ dados_clinicos.ancestrais if dados_clinicos and dados_clinicos.ancestrais else '' }}">
                     </div>
                 </div>
 
@@ -159,33 +202,45 @@
                 <div class="row">
                     <!-- Familiar DP -->
                     <div class="col-md-6 mb-3">
-                        <label for="familiar_com_dp" class="form-label fw-semibold text-dark-blue">Algum familiar possui Doença de Parkinson?</label>
+                        <label for="familiar_com_dp" class="form-label fw-semibold text-dark-blue">Algum familiar possui
+                            Doença de Parkinson?</label>
                         <select class="form-select" id="familiar_com_dp" name="familiar_com_dp">
-                            <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'não' %}selected{% endif %}>Não</option>
-                            <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'sim' %}selected{% endif %}>Sim</option>
-                            <option value="não sabe" {% if dados_clinicos and dados_clinicos.familiar_com_dp == 'não sabe' %}selected{% endif %}>Não sabe</option>
+                            <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_dp=='não'
+                                %}selected{% endif %}>Não</option>
+                            <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_dp=='sim'
+                                %}selected{% endif %}>Sim</option>
+                            <option value="não sabe" {% if dados_clinicos and dados_clinicos.familiar_com_dp=='não sabe'
+                                %}selected{% endif %}>Não sabe</option>
                         </select>
-                        
+
                         <div class="mt-3 d-none" id="div_qual_familiar_dp">
-                            <label for="qual_familiar_dp" class="form-label fw-semibold text-dark-blue">Qual familiar? (Grau de parentesco)</label>
-                            <input type="text" class="form-control" id="qual_familiar_dp" name="qual_familiar_dp" placeholder="Ex: Pai, Tio Materno..."
-                                   value="{{ dados_clinicos.qual_familiar_dp if dados_clinicos and dados_clinicos.qual_familiar_dp else '' }}">
+                            <label for="qual_familiar_dp" class="form-label fw-semibold text-dark-blue">Qual familiar?
+                                (Grau de parentesco)</label>
+                            <input type="text" class="form-control" id="qual_familiar_dp" name="qual_familiar_dp"
+                                placeholder="Ex: Pai, Tio Materno..."
+                                value="{{ dados_clinicos.qual_familiar_dp if dados_clinicos and dados_clinicos.qual_familiar_dp else '' }}">
                         </div>
                     </div>
 
                     <!-- Familiar Tremor -->
                     <div class="col-md-6 mb-3">
-                        <label for="familiar_com_tremor" class="form-label fw-semibold text-dark-blue">Algum familiar possui tremor essencial/outros?</label>
+                        <label for="familiar_com_tremor" class="form-label fw-semibold text-dark-blue">Algum familiar
+                            possui tremor essencial/outros?</label>
                         <select class="form-select" id="familiar_com_tremor" name="familiar_com_tremor">
-                            <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'não' %}selected{% endif %}>Não</option>
-                            <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'sim' %}selected{% endif %}>Sim</option>
-                            <option value="não sabe" {% if dados_clinicos and dados_clinicos.familiar_com_tremor == 'não sabe' %}selected{% endif %}>Não sabe</option>
+                            <option value="não" {% if dados_clinicos and dados_clinicos.familiar_com_tremor=='não'
+                                %}selected{% endif %}>Não</option>
+                            <option value="sim" {% if dados_clinicos and dados_clinicos.familiar_com_tremor=='sim'
+                                %}selected{% endif %}>Sim</option>
+                            <option value="não sabe" {% if dados_clinicos and
+                                dados_clinicos.familiar_com_tremor=='não sabe' %}selected{% endif %}>Não sabe</option>
                         </select>
-                        
+
                         <div class="mt-3 d-none" id="div_qual_familiar_tremor">
-                            <label for="qual_familiar_tremor" class="form-label fw-semibold text-dark-blue">Qual familiar? (Grau de parentesco)</label>
-                            <input type="text" class="form-control" id="qual_familiar_tremor" name="qual_familiar_tremor" placeholder="Ex: Avó Paterna, Mãe..."
-                                   value="{{ dados_clinicos.qual_familiar_tremor if dados_clinicos and dados_clinicos.qual_familiar_tremor else '' }}">
+                            <label for="qual_familiar_tremor" class="form-label fw-semibold text-dark-blue">Qual
+                                familiar? (Grau de parentesco)</label>
+                            <input type="text" class="form-control" id="qual_familiar_tremor"
+                                name="qual_familiar_tremor" placeholder="Ex: Avó Paterna, Mãe..."
+                                value="{{ dados_clinicos.qual_familiar_tremor if dados_clinicos and dados_clinicos.qual_familiar_tremor else '' }}">
                         </div>
                     </div>
                 </div>
@@ -193,7 +248,8 @@
 
             <!-- Botões de Ação -->
             <div class="d-flex justify-content-end gap-3 mb-5">
-                <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}" class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
+                <a href="{{ url_for('pacientes.detalhes_paciente', paciente_id=paciente.id) }}"
+                    class="btn btn-outline-secondary px-4 py-2">Cancelar</a>
                 <button type="submit" class="btn btn-navy px-5 py-2">
                     <i class="bi bi-check-circle me-1"></i> Salvar Dados Clínicos
                 </button>
@@ -201,6 +257,8 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
 
 {% block scripts %}
 <script src="{{ url_for('static', filename='js/dados_clinicos.js') }}"></script>
